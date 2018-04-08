@@ -1,0 +1,13 @@
+/Users/ankirai/Documents/Personal_Docs/code/workspace/note-shelf/noteshelf/src/main/java/com/ank/apps/noteshelf/exception/ExceptionDetail.java
+/Users/ankirai/Documents/Personal_Docs/code/workspace/note-shelf/noteshelf/src/main/java/com/ank/apps/noteshelf/exception/RestResponseEntityExceptionHandler.java
+/Users/ankirai/Documents/Personal_Docs/code/workspace/note-shelf/noteshelf/src/main/java/com/ank/apps/noteshelf/validator/EmailValidator.java
+/Users/ankirai/Documents/Personal_Docs/code/workspace/note-shelf/noteshelf/src/main/java/com/ank/apps/noteshelf/controller/UserController.java
+/Users/ankirai/Documents/Personal_Docs/code/workspace/note-shelf/noteshelf/src/main/java/com/ank/apps/noteshelf/validator/ValidEmail.java
+/Users/ankirai/Documents/Personal_Docs/code/workspace/note-shelf/noteshelf/src/main/java/com/ank/apps/noteshelf/resource/UserSignUpDetail.java
+/Users/ankirai/Documents/Personal_Docs/code/workspace/note-shelf/noteshelf/src/main/java/com/ank/apps/noteshelf/validator/UserValidator.java
+/Users/ankirai/Documents/Personal_Docs/code/workspace/note-shelf/noteshelf/src/main/java/com/ank/apps/noteshelf/controller/GreetingsController.java
+/Users/ankirai/Documents/Personal_Docs/code/workspace/note-shelf/noteshelf/src/main/java/com/ank/apps/noteshelf/exception/ExceptionDetailBuilder.java
+/Users/ankirai/Documents/Personal_Docs/code/workspace/note-shelf/noteshelf/src/main/java/com/ank/apps/noteshelf/App.java
+/Users/ankirai/Documents/Personal_Docs/code/workspace/note-shelf/noteshelf/src/main/java/com/ank/apps/noteshelf/service/UserService.java
+/Users/ankirai/Documents/Personal_Docs/code/workspace/note-shelf/noteshelf/src/main/java/com/ank/apps/noteshelf/NoteShelfApplication.java
+/Users/ankirai/Documents/Personal_Docs/code/workspace/note-shelf/noteshelf/src/main/java/com/ank/apps/noteshelf/service/impl/UserServiceImpl.java
