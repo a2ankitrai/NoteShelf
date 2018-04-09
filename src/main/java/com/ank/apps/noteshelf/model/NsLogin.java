@@ -1,5 +1,5 @@
 package com.ank.apps.noteshelf.model;
-// Generated Apr 7, 2018 11:14:44 PM by Hibernate Tools 5.2.8.Final
+// Generated Apr 8, 2018 6:54:01 PM by Hibernate Tools 5.2.8.Final
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

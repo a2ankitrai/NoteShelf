@@ -1,5 +1,5 @@
 package com.ank.apps.noteshelf.model;
-// Generated Apr 7, 2018 11:14:44 PM by Hibernate Tools 5.2.8.Final
+// Generated Apr 8, 2018 6:54:01 PM by Hibernate Tools 5.2.8.Final
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,10 +17,6 @@ import javax.persistence.UniqueConstraint;
 		@UniqueConstraint(columnNames = "EMAIL_ADDRESS") })
 public class NsUser implements java.io.Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -2725625022629421125L;
 	private Integer userId;
 	private String firstName;
 	private String lastName;
@@ -52,7 +48,7 @@ public class NsUser implements java.io.Serializable {
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-	
+
 	@Column(name = "USER_ID", unique = true, nullable = false)
 	public Integer getUserId() {
 		return this.userId;
@@ -62,7 +58,7 @@ public class NsUser implements java.io.Serializable {
 		this.userId = userId;
 	}
 
-	@Column(name = "FIRST_NAME", nullable = false, length = 45)
+	@Column(name = "FIRST_NAME", nullable = false, length = 100)
 	public String getFirstName() {
 		return this.firstName;
 	}
@@ -71,7 +67,7 @@ public class NsUser implements java.io.Serializable {
 		this.firstName = firstName;
 	}
 
-	@Column(name = "LAST_NAME", length = 45)
+	@Column(name = "LAST_NAME", length = 100)
 	public String getLastName() {
 		return this.lastName;
 	}
@@ -80,7 +76,7 @@ public class NsUser implements java.io.Serializable {
 		this.lastName = lastName;
 	}
 
-	@Column(name = "USERNAME", unique = true, nullable = false, length = 45)
+	@Column(name = "USERNAME", unique = true, nullable = false, length = 100)
 	public String getUsername() {
 		return this.username;
 	}
@@ -98,7 +94,7 @@ public class NsUser implements java.io.Serializable {
 		this.emailAddress = emailAddress;
 	}
 
-	@Column(name = "PASSWORD", nullable = false, length = 50)
+	@Column(name = "PASSWORD", nullable = false, length = 100)
 	public String getPassword() {
 		return this.password;
 	}
