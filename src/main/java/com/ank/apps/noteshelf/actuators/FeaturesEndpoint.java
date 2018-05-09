@@ -20,13 +20,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * */
 
 @Component
-@Endpoint(id = "features")
+@Endpoint(id = "features", enableByDefault = true)
 public class FeaturesEndpoint {
 
 	private Map<String, Feature> features = new ConcurrentHashMap<>();
 	
 	@ReadOperation
     public Map<String, Feature> features() {
+		
+		Feature feature1 = new Feature();
+		feature1.setEnabled(true);
+		features.put("Awesome", feature1);
+		
         return features;
     }
 	
@@ -37,6 +42,7 @@ public class FeaturesEndpoint {
 	
 	@WriteOperation
     public void configureFeature(@Selector String name, Feature feature) {
+		System.out.println(feature.getEnabled()+" added");
         features.put(name, feature);
     }
 	
@@ -47,20 +53,9 @@ public class FeaturesEndpoint {
 	
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	public static class Feature {
-		
-		@JsonProperty("name")
-		private String name;
-		
+	 
 		@JsonProperty("enabled")
         private Boolean enabled;
-
-		public String getName() {
-			return name;
-		}
-
-		public void setName(String name) {
-			this.name = name;
-		}
 
 		public Boolean getEnabled() {
 			return enabled;

@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -25,6 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableAutoConfiguration(exclude = { SecurityAutoConfiguration.class })
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class })
+@ComponentScan(basePackages={"com.ank.apps.noteshelf"})
 public class NoteShelfApplication {
 
 	@Bean

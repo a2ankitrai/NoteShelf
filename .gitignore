@@ -1,4 +1,9 @@
 
 
-notes.txt
+notes/
+/notes
 *.class
+
+.classpath
+.project
+target/

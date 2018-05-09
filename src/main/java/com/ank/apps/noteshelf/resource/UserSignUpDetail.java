@@ -3,6 +3,7 @@ package com.ank.apps.noteshelf.resource;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import com.ank.apps.noteshelf.validation.annotation.AlphaNumeric;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -10,16 +11,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class UserSignUpDetail {
 
 	@NotNull
-    @NotEmpty
+	@AlphaNumeric
+    @NotEmpty(message="User Name cannot be empty")
 	@JsonProperty("user_name")
 	private String userName;
 	
 	@NotNull
     @NotEmpty
+    @AlphaNumeric
 	@JsonProperty("first_name")
 	private String firstName;
 	
 	@JsonProperty("last_name")
+	@AlphaNumeric
 	private String lastName;
 	
 	@NotNull

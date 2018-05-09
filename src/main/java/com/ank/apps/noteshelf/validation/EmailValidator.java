@@ -6,6 +6,8 @@ import java.util.regex.Pattern;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+import com.ank.apps.noteshelf.validation.annotation.ValidEmail;
+
 public class EmailValidator implements ConstraintValidator<ValidEmail, String> {
 
 	private Pattern pattern;
