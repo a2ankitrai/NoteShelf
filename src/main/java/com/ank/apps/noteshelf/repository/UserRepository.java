@@ -10,13 +10,10 @@ public interface UserRepository extends CrudRepository<NsUser, String> {
 	/**
 	 * PagingAndSortingRepository could also have been extended for pagination extension
 	 * */
+	 
+	NsUser findByUserName(String username);
 	
-	
-	NsUser save(NsUser user);
-	
-//	NsUser findByUserName(String username);
-	
-	NsUser findByEmailAddress(String emailAddress);
+	NsUser findByEmail(String email);
 	
 	
 }

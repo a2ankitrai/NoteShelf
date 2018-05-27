@@ -31,15 +31,14 @@ public class UserSignUpDetail {
 	@JsonProperty("email_address")
 	private String emailAddress;
 	
-	@NotNull
-    @NotEmpty
 	@JsonProperty("password")
 	private String password;
-	
-	@NotNull
-    @NotEmpty
+	 
 	@JsonProperty("confirm_password")
 	private String confirmPassword;
+	
+	@JsonProperty("auth_type")
+	private String authType;
 
 	@JsonProperty("user_name")
 	public String getUserName() {
@@ -100,6 +99,15 @@ public class UserSignUpDetail {
 	public void setConfirmPassword(String confirmPassword) {
 		this.confirmPassword = confirmPassword;
 	}
+
+	public String getAuthType() {
+		return authType;
+	}
+
+	public void setAuthType(String authType) {
+		this.authType = authType;
+	}
+ 
 	
 	
 }

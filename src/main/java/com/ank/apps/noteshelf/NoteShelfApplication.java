@@ -17,30 +17,29 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * 
- * @EnableAutoConfiguration(exclude = { SecurityAutoConfiguration.class })
-@ComponentScan(basePackages={"com.ank.apps.noteshelf"})
-@EnableJpaRepositories(basePackages="com.ank.apps.noteshelf.repository")
-@EnableTransactionManagement
-@EntityScan(basePackages="com.ank.apps.noteshelf.model")
- * */
+ * @EnableAutoConfiguration(exclude = { SecurityAutoConfiguration.class
+ *                                  }) @ComponentScan(basePackages={"com.ank.apps.noteshelf"})
+ * @EnableJpaRepositories(basePackages="com.ank.apps.noteshelf.repository") @EnableTransactionManagement @EntityScan(basePackages="com.ank.apps.noteshelf.model")
+ */
 
 @EnableAutoConfiguration(exclude = { SecurityAutoConfiguration.class })
-@SpringBootApplication(exclude = {SecurityAutoConfiguration.class })
-@ComponentScan(basePackages={"com.ank.apps.noteshelf"})
+@SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
+@ComponentScan(basePackages = { "com.ank.apps.noteshelf" })
 public class NoteShelfApplication {
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-	    return new BCryptPasswordEncoder();
+		return new BCryptPasswordEncoder();
 	}
-	
+
 	public static void main(String[] args) {
-		
+
 		/**
-	     * Entry point for the application.
-	     * 
-	     * @param args Command line arguments.
-	     */
+		 * Entry point for the application.
+		 * 
+		 * @param args
+		 *            Command line arguments.
+		 */
 		SpringApplication.run(NoteShelfApplication.class, args);
 	}
 }

@@ -1,17 +1,24 @@
 package com.ank.apps.noteshelf.service.impl;
 
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ank.apps.noteshelf.exception.UserAlreadyExistException;
 import com.ank.apps.noteshelf.model.NsUser;
+import com.ank.apps.noteshelf.model.NsUserAuthDetail;
+import com.ank.apps.noteshelf.repository.UserAuthDetailRepository;
 import com.ank.apps.noteshelf.repository.UserRepository;
+import com.ank.apps.noteshelf.resource.AuthType;
 import com.ank.apps.noteshelf.resource.UserDO;
 import com.ank.apps.noteshelf.resource.UserSignUpDetail;
 import com.ank.apps.noteshelf.service.UserService;
+import com.ank.apps.noteshelf.util.UserConstant;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -22,38 +29,72 @@ public class UserServiceImpl implements UserService {
 	private UserRepository userRepository;
 	
 	@Autowired
+	private UserAuthDetailRepository userAuthDetailRepository;
+	
+	@Autowired
     private PasswordEncoder passwordEncoder;
 	
 	@Override
+	@Transactional
 	public UserDO registerUser(UserSignUpDetail userSignUpDetail) {
 		
 		logger.debug("UserServiceImpl :: registerUser :: start ");
-		UserDO userDO = null;
-		
 		
 		if (emailExist(userSignUpDetail.getEmailAddress())) {
-            throw new UserAlreadyExistException("There is an account with that email adress: " + userSignUpDetail.getEmailAddress());
+            throw new UserAlreadyExistException("Email address already exists: " + userSignUpDetail.getEmailAddress());
         }
 		 
+		if (userNameExist(userSignUpDetail.getUserName())) {
+            throw new UserAlreadyExistException("User Name already exists: " + userSignUpDetail.getUserName());
+        }
 		
-		NsUser nsUser = new NsUser();
-		nsUser.setUsername(userSignUpDetail.getUserName());
-		nsUser.setFirstName(userSignUpDetail.getFirstName());
-		nsUser.setLastName(userSignUpDetail.getLastName());
-		nsUser.setPassword(passwordEncoder.encode(userSignUpDetail.getPassword()));
-		nsUser.setEmailAddress(userSignUpDetail.getEmailAddress());
-		nsUser.setLocked("N");
-		nsUser.setExpired("N");
+		NsUser user = new NsUser();
+		 
+		user.setUserName(userSignUpDetail.getUserName());
+		user.setFirstName(userSignUpDetail.getFirstName());
+		user.setLastName(userSignUpDetail.getLastName());
+		user.setEmail(userSignUpDetail.getEmailAddress());
 		
-		nsUser = userRepository.save(nsUser);
+		Date now = new Date();
+		user.setCreatedDate(now);
+		user.setUpdatedDate(now);
 		
-		if(nsUser != null) {
-			userDO = new UserDO();
+		user = userRepository.save(user);
+		
+		/**
+		 * Saving Auth Details..
+		 * */
+		
+		NsUserAuthDetail userAuthDetail = new NsUserAuthDetail(user.getUserId());
+		
+		AuthType authType = AuthType.fromString(userSignUpDetail.getAuthType());
+		userAuthDetail.setAuthType(authType.toString());
+		
+		if(authType == AuthType.APP) {
+			userAuthDetail.setPassword(passwordEncoder.encode(userSignUpDetail.getPassword()));
+		}
+		userAuthDetail.setActive(UserConstant.Y);
+		userAuthDetail.setLocked(UserConstant.N);
+		userAuthDetail.setCreatedDate(now);
+		userAuthDetail.setUpdatedDate(now);
+		
+		userAuthDetail = userAuthDetailRepository.save(userAuthDetail);
+		 	
+		UserDO userDO = null;
+		
+		if(user != null && userAuthDetail != null) {
 			
-			userDO.setUserId(nsUser.getUserId());
-			userDO.setUsername(nsUser.getUsername());
-			userDO.setFirstName(nsUser.getFirstName());
-			userDO.setLastName(nsUser.getLastName());
+			userDO = new UserDO();
+			userDO.setUserId(user.getUserId());
+			userDO.setUsername(user.getUserName());
+			userDO.setFirstName(user.getFirstName());
+			userDO.setLastName(user.getLastName());
+			
+			userDO.setAuthType(AuthType.fromString(userAuthDetail.getAuthType()));
+			userDO.setActive(userAuthDetail.getActive());
+			userDO.setLocked(userAuthDetail.getLocked());
+			userDO.setCreatedDate(user.getCreatedDate());
+			userDO.setUpdatedDate(user.getUpdatedDate());
 			
 		}
 		
@@ -62,12 +103,12 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	private boolean emailExist(final String email) {
-        return userRepository.findByEmailAddress(email) != null;
+        return userRepository.findByEmail(email) != null;
     }
 	
-	/*
+	 
 	private boolean userNameExist(final String userName) {
 		return userRepository.findByUserName(userName) != null;
-	}*/
+	}
 
 }
