@@ -1,0 +1,92 @@
+package com.ank.noteshelf.resource;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import lombok.Data;
+
+@Data
+public class UserLoginDetail implements UserDetails{
+
+	private String userName;
+	private String password;
+	private List<String> roles;
+	private AccountFlag accountFlag;
+	  
+	public UserLoginDetail(String userName, String password, List<String> roles, AccountFlag accountFlag) {
+		this.userName = userName;
+		this.password = password;
+		this.roles = roles;
+		this.accountFlag = accountFlag;
+	}
+	
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		
+		return getRoles()
+                .stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                .collect(Collectors.toList());
+	}
+
+	@Override
+	public String getPassword() {
+		return this.password;
+	}
+	  
+	@Override
+	public String getUsername() {
+		
+		return this.userName;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		
+		return accountFlag.isAccountNonExpired();
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		
+		return accountFlag.isAccountNonLocked();
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		
+		return accountFlag.isCredentialsNonExpired();
+	}
+
+	@Override
+	public boolean isEnabled() {
+		
+		return accountFlag.isEnabled();
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public List<String> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<String> roles) {
+		this.roles = roles;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	} 
+
+}

@@ -1,0 +1,68 @@
+
+server:
+  port: 9000
+  servlet:
+    session:
+      timeout: 3000
+        
+
+# spring actuators  
+# all web endpoints are available beneath the path /actuator with URLs of the form /actuator/{id}.   
+# changing the form of the endpoint URLs from /actuator/{id} to /manage/{id}. For example, the URL info endpoint would become /manage/info.
+  
+management:
+  server:
+    port: 9001
+    address: 127.0.0.1
+  endpoints:
+    web:
+      base-path: /manage  
+        
+    
+# spring datasource properties
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/Note_shelf_DB?useSSL=false
+    username: admin
+    password: admin
+    tomcat:
+      max-wait: 20000
+      max-active: 50
+      max-idle: 20
+      min-idle: 15
+      
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        id.new_generator_mappings: false
+        format_sql: true
+        
+  session:
+    store-type: redis
+    redis:
+      flush-mode: immediate
+      namespace: spring:session
+            
+  redis:
+    host: localhost
+    port: 6379
+        
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE 
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
