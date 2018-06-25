@@ -18,10 +18,10 @@ import com.ank.noteshelf.repository.UserAuthDetailRepository;
 import com.ank.noteshelf.repository.UserRepository;
 import com.ank.noteshelf.resource.AuthType;
 import com.ank.noteshelf.resource.Role;
-import com.ank.noteshelf.resource.UserDO;
 import com.ank.noteshelf.resource.UserSignUpDetail;
 import com.ank.noteshelf.service.UserService;
 import com.ank.noteshelf.util.UserConstant;
+import com.ank.noteshelf.vo.UserVO;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	@Transactional
-	public UserDO registerUser(UserSignUpDetail userSignUpDetail) {
+	public UserVO registerUser(UserSignUpDetail userSignUpDetail) {
 		
 		logger.debug("UserServiceImpl :: registerUser :: start ");
 		
@@ -88,11 +88,11 @@ public class UserServiceImpl implements UserService {
 		userRole.setUpdatedDate(now);
 		userRole = roleRepository.save(userRole);
 		 	
-		UserDO userDO = null;
+		UserVO userDO = null;
 		
 		if(user != null && userAuthDetail != null) {
 			
-			userDO = new UserDO();
+			userDO = new UserVO();
 			userDO.setUserId(user.getUserId());
 			userDO.setUsername(user.getUserName());
 			userDO.setFirstName(user.getFirstName());

@@ -59,7 +59,7 @@ public class NsNotesMetaData implements java.io.Serializable {
 		this.userId = userId;
 	}
 
-	@Column(name = "NOTE_NOSQL_ID", length = 45)
+	@Column(name = "NOTE_NOSQL_ID", length = 100)
 	public String getNoteNosqlId() {
 		return this.noteNosqlId;
 	}

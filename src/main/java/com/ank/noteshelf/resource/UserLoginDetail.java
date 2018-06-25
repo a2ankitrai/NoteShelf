@@ -8,18 +8,22 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.ank.noteshelf.model.NsUser;
+
 import lombok.Data;
 
 @Data
 public class UserLoginDetail implements UserDetails{
 
+	private Integer userId;
 	private String userName;
 	private String password;
 	private List<String> roles;
 	private AccountFlag accountFlag;
 	  
-	public UserLoginDetail(String userName, String password, List<String> roles, AccountFlag accountFlag) {
-		this.userName = userName;
+	public UserLoginDetail(NsUser user, String password, List<String> roles, AccountFlag accountFlag) {
+		this.userId = user.getUserId();
+		this.userName = user.getUserName();
 		this.password = password;
 		this.roles = roles;
 		this.accountFlag = accountFlag;

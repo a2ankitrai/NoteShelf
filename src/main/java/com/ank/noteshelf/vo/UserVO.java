@@ -1,6 +1,9 @@
-package com.ank.noteshelf.resource;
+package com.ank.noteshelf.vo;
 
 import java.util.Date;
+
+import com.ank.noteshelf.resource.AuthType;
+import com.ank.noteshelf.resource.Role;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDO {
+public class UserVO {
 
 	private int userId;
 	

@@ -53,7 +53,7 @@ public class NsUserDetailServiceImpl implements UserDetailsService{
 			}
 		}
 		
-		UserLoginDetail userLoginDetail = new UserLoginDetail(user.getUserName(), userAuthDetail.getPassword(), roleList, accountFlag);
+		UserLoginDetail userLoginDetail = new UserLoginDetail(user, userAuthDetail.getPassword(), roleList, accountFlag);
 		
 		return userLoginDetail;
 	}
