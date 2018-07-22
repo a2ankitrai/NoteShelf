@@ -12,5 +12,6 @@ public interface NoteDataRepository extends MongoRepository<NsNotesData, String>
 	
 	Optional<NsNotesData> findById(String id);
 	
+	void deleteById(String id);
 
 }

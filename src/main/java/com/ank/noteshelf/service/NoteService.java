@@ -9,8 +9,12 @@ public interface NoteService {
 	
 	NoteVO createNote(NoteInput noteInput, int userId);
 	
+	NoteVO updateNote(NoteInput noteInput, int noteId, int userId);
+	
 	List<NoteVO> getAllNotesByUser(int userId);
 	
 	NoteVO getNoteById(int noteId, int userId);
+	
+	Boolean deleteNoteById(int noteId, int userId);
 
 }

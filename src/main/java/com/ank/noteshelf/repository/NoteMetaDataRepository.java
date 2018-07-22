@@ -13,5 +13,7 @@ public interface NoteMetaDataRepository extends JpaRepository<NsNotesMetaData, S
 	List<NsNotesMetaData> findByUserId(int userId);
 	
 	NsNotesMetaData findByNoteIdAndUserId(Integer noteId, int userId);
+	
+	Integer deleteByNoteIdAndUserId(Integer noteId, int userId);
 
 }
