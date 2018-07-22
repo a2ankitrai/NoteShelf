@@ -2,7 +2,6 @@ package com.ank.noteshelf.vo;
 
 import java.util.Date;
 
-import com.ank.noteshelf.resource.AuthType;
 import com.ank.noteshelf.resource.Role;
 
 import lombok.AllArgsConstructor;
@@ -15,16 +14,18 @@ import lombok.NoArgsConstructor;
 public class UserVO {
 
 	private int userId;
-	
+	 
 	private String firstName;
 	
 	private String lastName;
 	
-	private String username;
+	private String userName;
 
-	private AuthType authType; 
+	private String authType; 
 	
 	private Role role;
+	
+	private int userProfileId;
 	
 	private Date createdDate;
 	 

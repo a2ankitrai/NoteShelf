@@ -14,9 +14,9 @@ public class ProfileController {
 	 * 
 	 * PUT/profile
 	 * 
-	 * GET /profile/deactivate
+	 * PUT /profile/deactivate
 	 * 
-	 * GET /profile/delete
+	 * DELETE /profile/delete
 	 * 
 	 * */
 }

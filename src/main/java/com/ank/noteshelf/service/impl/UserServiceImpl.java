@@ -5,22 +5,22 @@ import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ank.noteshelf.exception.UserAlreadyExistException;
+import com.ank.noteshelf.exception.NsRuntimeException;
+import com.ank.noteshelf.mapstruct.UserObjectsMapper;
 import com.ank.noteshelf.model.NsUser;
 import com.ank.noteshelf.model.NsUserAuthDetail;
+import com.ank.noteshelf.model.NsUserProfile;
 import com.ank.noteshelf.model.NsUserRoles;
 import com.ank.noteshelf.repository.RoleRepository;
 import com.ank.noteshelf.repository.UserAuthDetailRepository;
+import com.ank.noteshelf.repository.UserProfileRepository;
 import com.ank.noteshelf.repository.UserRepository;
-import com.ank.noteshelf.resource.AuthType;
 import com.ank.noteshelf.resource.Role;
 import com.ank.noteshelf.resource.UserSignUpDetail;
 import com.ank.noteshelf.service.UserService;
-import com.ank.noteshelf.util.UserConstant;
 import com.ank.noteshelf.vo.UserVO;
 
 @Service
@@ -38,8 +38,8 @@ public class UserServiceImpl implements UserService {
 	RoleRepository roleRepository;
 	
 	@Autowired
-    private PasswordEncoder passwordEncoder;
-	
+	private UserProfileRepository userProfileRepository;
+	  
 	@Override
 	@Transactional
 	public UserVO registerUser(UserSignUpDetail userSignUpDetail) {
@@ -47,67 +47,33 @@ public class UserServiceImpl implements UserService {
 		logger.debug("UserServiceImpl :: registerUser :: start ");
 		
 		if (emailExist(userSignUpDetail.getEmailAddress())) {
-            throw new UserAlreadyExistException("Email address already exists: " + userSignUpDetail.getEmailAddress());
+            throw new NsRuntimeException("Email address already exists: " + userSignUpDetail.getEmailAddress());
         }
 		 
 		if (userNameExist(userSignUpDetail.getUserName())) {
-            throw new UserAlreadyExistException("User Name already exists: " + userSignUpDetail.getUserName());
+            throw new NsRuntimeException("User Name already exists: " + userSignUpDetail.getUserName());
         }
 		
-		NsUser user = new NsUser();
-		 
-		user.setUserName(userSignUpDetail.getUserName());
-		user.setFirstName(userSignUpDetail.getFirstName());
-		user.setLastName(userSignUpDetail.getLastName());
-		user.setEmail(userSignUpDetail.getEmailAddress());
-		
 		Date now = new Date();
-		user.setCreatedDate(now);
-		user.setUpdatedDate(now);
-		
+		NsUser user = UserObjectsMapper.INSTANCE.mapUserSignUpToNsUser(userSignUpDetail, now);
 		user = userRepository.save(user);
-		  
-		NsUserAuthDetail userAuthDetail = new NsUserAuthDetail(user.getUserId());
-		
-		AuthType authType = AuthType.fromString(userSignUpDetail.getAuthType());
-		userAuthDetail.setAuthType(authType.toString());
-		
-		if(authType == AuthType.APP) {
-			userAuthDetail.setPassword(passwordEncoder.encode(userSignUpDetail.getPassword()));
-		}
-		userAuthDetail.setAccountNonExpired(UserConstant.Y);
-		userAuthDetail.setAccountNonLocked(UserConstant.Y);
-		userAuthDetail.setCredentialsNonExpired(UserConstant.Y);
-		userAuthDetail.setEnabled(UserConstant.Y);
-		userAuthDetail.setCreatedDate(now);
-		userAuthDetail.setUpdatedDate(now);
+		   
+		NsUserAuthDetail userAuthDetail = UserObjectsMapper.INSTANCE.mapUserSignUpToUserAuthDetail(user, userSignUpDetail);
 		userAuthDetail = userAuthDetailRepository.save(userAuthDetail);
-		
-		NsUserRoles userRole = new NsUserRoles(user.getUserId(),Role.USER.toString());
-		userRole.setCreatedDate(now);
-		userRole.setUpdatedDate(now);
+ 	
+		NsUserRoles userRole = UserObjectsMapper.INSTANCE.mapUserToUserRoles(user, Role.USER.toString());
 		userRole = roleRepository.save(userRole);
-		 	
-		UserVO userDO = null;
+ 
+		NsUserProfile userProfile = UserObjectsMapper.INSTANCE.mapUserToUserProfile(user);
+		userProfile = userProfileRepository.save(userProfile);
 		
+		UserVO userVO = null; 
 		if(user != null && userAuthDetail != null) {
-			
-			userDO = new UserVO();
-			userDO.setUserId(user.getUserId());
-			userDO.setUsername(user.getUserName());
-			userDO.setFirstName(user.getFirstName());
-			userDO.setLastName(user.getLastName());
-			
-			userDO.setRole(Role.fromString(userRole.getRoleName()));
-			
-			userDO.setAuthType(AuthType.fromString(userAuthDetail.getAuthType()));
-			userDO.setCreatedDate(user.getCreatedDate());
-			userDO.setUpdatedDate(user.getUpdatedDate());
-			
+			userVO = UserObjectsMapper.INSTANCE.mapUserToUserVO(user, userProfile, userRole, userAuthDetail);
 		}
-		
+		 
 		logger.debug("UserServiceImpl :: registerUser :: end ");
-		return userDO;
+		return userVO;
 	}
 	
 	private boolean emailExist(final String email) {

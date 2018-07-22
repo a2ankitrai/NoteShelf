@@ -1,8 +1,5 @@
 package com.ank.noteshelf.controller;
 
-import java.security.Principal;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -12,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -67,19 +63,6 @@ public class UserController {
 		ResponseEntity<String> responseEntity = new ResponseEntity<String>("Login Successful! Welcome "+ userLoginDetail.getUsername(), HttpStatus.OK);
 	 
 		return responseEntity;
-		
-		/**
-		 * Check for session token 
-		 * 
-		 * if present - check session validity - if valid return the same 
-		 * 
-		 * if not present - check the user name password for authentication
-		 * 	generate a session token and return in response.
-		 * 
-		 * for all other request session token should be validated..
-		 * 
-		 * 
-		 * */
 	}
 
 	@GetMapping("/logout")
