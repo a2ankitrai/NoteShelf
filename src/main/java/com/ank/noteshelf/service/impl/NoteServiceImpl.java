@@ -100,7 +100,9 @@ public class NoteServiceImpl implements NoteService {
 	public NoteVO getNoteById(int noteId, int userId) {
 
 		Optional<NsNotesMetaData> noteMetaData = Optional.ofNullable(noteMetaDataRepository.findByNoteIdAndUserId(noteId, userId)); 
-		Optional<NsNotesData> noteData = noteMetaData.isPresent() ? noteDataRepository.findById(noteMetaData.get().getNoteNosqlId()) : Optional.ofNullable(null); 
+		Optional<NsNotesData> noteData = noteMetaData.isPresent() ? 
+											noteDataRepository.findById(noteMetaData.get().getNoteNosqlId()) 
+											: Optional.ofNullable(null); 
 		NoteVO noteVO = null;
 		
 		if(noteData.isPresent()) {
@@ -138,20 +140,8 @@ public class NoteServiceImpl implements NoteService {
 	@Transactional
 	public Boolean deleteNoteById(int noteId, int userId) {
 		Boolean isDeleted = false;
-		
-//		Optional<NsNotesMetaData> noteMetaData = Optional.ofNullable(noteMetaDataRepository.deleteByNoteIdAndUserId(noteId, userId)); 
-//		if(noteMetaData.isPresent()) {
-//			noteDataRepository.deleteById(noteMetaData.get().getNoteNosqlId()); 
-//			isDeleted = true;
-//		}
-//		
-//		return isDeleted;
-		
-		// below is wrong. get the notemeta data and delete the actual note as well.
-		
 		Optional<Integer> val = Optional.ofNullable(noteMetaDataRepository.deleteByNoteIdAndUserId(noteId, userId)); 
 		if(val.isPresent()) {
-			System.out.println(val);
 			isDeleted = true;
 		}
 		else {

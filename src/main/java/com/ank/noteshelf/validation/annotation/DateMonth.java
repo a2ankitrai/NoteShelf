@@ -12,18 +12,17 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-import com.ank.noteshelf.validation.NumericValidator;
+import com.ank.noteshelf.validation.DateMonthValidator;
 
 @Documented
 @Retention(RUNTIME)
 @Target({ FIELD, METHOD, PARAMETER })
-@Constraint(validatedBy = {NumericValidator.class})
-public @interface AlphaNumeric {
+@Constraint(validatedBy = {DateMonthValidator.class})
+public @interface DateMonth {
 	
-	String message() default "Only Aplha-Numeric characters are allowed.";
+	String message() default "Entered date is not in valid format. Please enter a valid date";
 	 
     Class<?>[] groups() default {};
  
     Class<? extends Payload>[] payload() default {};
-	
 }

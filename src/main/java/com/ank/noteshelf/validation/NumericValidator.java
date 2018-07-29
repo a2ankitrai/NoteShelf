@@ -5,9 +5,9 @@ import javax.validation.ConstraintValidatorContext;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.ank.noteshelf.validation.annotation.AlphaNumeric;
+import com.ank.noteshelf.validation.annotation.Numeric;
 
-public class NumericValidator implements ConstraintValidator<AlphaNumeric, String>{
+public class NumericValidator implements ConstraintValidator<Numeric, String>{
 
 	@Override
 	public boolean isValid(String value, ConstraintValidatorContext context) {

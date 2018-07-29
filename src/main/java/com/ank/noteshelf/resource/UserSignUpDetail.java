@@ -7,7 +7,14 @@ import com.ank.noteshelf.validation.annotation.AlphaNumeric;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserSignUpDetail {
 
 	@NotNull
@@ -39,75 +46,6 @@ public class UserSignUpDetail {
 	
 	@JsonProperty("auth_type")
 	private String authType;
-
-	@JsonProperty("user_name")
-	public String getUserName() {
-		return userName;
-	}
-
-	@JsonProperty("user_name")
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	@JsonProperty("first_name")
-	public String getFirstName() {
-		return firstName;
-	}
-
-	@JsonProperty("first_name")
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	@JsonProperty("last_name")
-	public String getLastName() {
-		return lastName;
-	}
-
-	@JsonProperty("last_name")
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	@JsonProperty("email_address")
-	public String getEmailAddress() {
-		return emailAddress;
-	}
-
-	@JsonProperty("email_address")
-	public void setEmailAddress(String emailAddress) {
-		this.emailAddress = emailAddress;
-	}
-
-	@JsonProperty("password")
-	public String getPassword() {
-		return password;
-	}
-
-	@JsonProperty("password")
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	@JsonProperty("confirm_password")
-	public String getConfirmPassword() {
-		return confirmPassword;
-	}
-
-	@JsonProperty("confirm_password")
-	public void setConfirmPassword(String confirmPassword) {
-		this.confirmPassword = confirmPassword;
-	}
-
-	public String getAuthType() {
-		return authType;
-	}
-
-	public void setAuthType(String authType) {
-		this.authType = authType;
-	}
- 
 	
 	
 }
