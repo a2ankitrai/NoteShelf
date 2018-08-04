@@ -11,8 +11,8 @@ import com.ank.noteshelf.model.NsUserAuthDetail;
 import com.ank.noteshelf.model.NsUserProfile;
 import com.ank.noteshelf.model.NsUserRoles;
 import com.ank.noteshelf.resource.UserSignUpDetail;
+import com.ank.noteshelf.response.UserResponse;
 import com.ank.noteshelf.util.UserConstant;
-import com.ank.noteshelf.vo.UserVO;
 
 @Mapper(uses = UserObjectsMapperFunctions.class)
 public interface UserObjectsMapper {
@@ -58,6 +58,6 @@ public interface UserObjectsMapper {
 	@Mapping(source = "userProfile.userProfileId", target = "userProfileId")
 	@Mapping(source = "userRole.roleName", target = "role", qualifiedByName="mapUserRole")
 	@Mapping(source = "userAuthDetail.authType", target = "authType", qualifiedByName="mapUserAuthType")
-	UserVO mapUserToUserVO(NsUser user, NsUserProfile userProfile, NsUserRoles userRole, NsUserAuthDetail userAuthDetail);
+	UserResponse mapUserToUserVO(NsUser user, NsUserProfile userProfile, NsUserRoles userRole, NsUserAuthDetail userAuthDetail);
 	 
 }

@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ank.noteshelf.resource.UserLoginDetail;
 import com.ank.noteshelf.resource.UserSignUpDetail;
+import com.ank.noteshelf.response.UserResponse;
 import com.ank.noteshelf.service.UserService;
-import com.ank.noteshelf.vo.UserVO;
 
 /**
  * @RequestMapping : Maps a URL pattern and/or HTTP method to a method or
@@ -37,15 +37,15 @@ public class UserController {
 
 	@PostMapping("/registration")
 	@ResponseBody
-	public ResponseEntity<UserVO> registerUser(@RequestBody @Valid UserSignUpDetail userSignUpDetail) {
+	public ResponseEntity<UserResponse> registerUser(@RequestBody @Valid UserSignUpDetail userSignUpDetail) {
 		logger.debug("UserController :: userRegistration :: start ");
 
-		UserVO userDO = null;
+		UserResponse userResponse = null;
 
-		userDO = userService.registerUser(userSignUpDetail);
+		userResponse = userService.registerUser(userSignUpDetail);
 
 		logger.debug("UserController :: userRegistration :: end ");
-		return new ResponseEntity<UserVO>(userDO, HttpStatus.OK);
+		return new ResponseEntity<UserResponse>(userResponse, HttpStatus.OK);
 	}
 
 	@GetMapping("/login")

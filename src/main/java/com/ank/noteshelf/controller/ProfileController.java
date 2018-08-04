@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ank.noteshelf.resource.ProfileInput;
 import com.ank.noteshelf.resource.UserLoginDetail;
+import com.ank.noteshelf.response.ProfileResponse;
 import com.ank.noteshelf.service.ProfileService;
-import com.ank.noteshelf.vo.ProfileVO;
 
 @RequestMapping("/profile")
 @RestController
@@ -36,27 +36,27 @@ public class ProfileController {
 	public static final Logger logger = LoggerFactory.getLogger(ProfileController.class);
 	
 	@GetMapping
-	public ResponseEntity<ProfileVO> getProfileByUserId(HttpSession session){
+	public ResponseEntity<ProfileResponse> getProfileByUserId(HttpSession session){
 		
-		ProfileVO profileVO = null;
-		ResponseEntity<ProfileVO> response = null;
+		ProfileResponse profileResponse = null;
+		ResponseEntity<ProfileResponse> response = null;
 		
 		UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute("userLoginDetail");
-		profileVO = profileService.getProfileByUserId(userLoginDetail.getUserId());
-		HttpStatus status = profileVO != null ? HttpStatus.OK : HttpStatus.NOT_FOUND;
-		response = new ResponseEntity<>(profileVO, status);
+		profileResponse = profileService.getProfileByUserId(userLoginDetail.getUserId());
+		HttpStatus status = profileResponse != null ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+		response = new ResponseEntity<>(profileResponse, status);
 		return response;
 	}
 	
 	@PutMapping
-	public ResponseEntity<ProfileVO> updateProfileByUserId(@RequestBody @Valid ProfileInput profileInput, HttpSession session){
+	public ResponseEntity<ProfileResponse> updateProfileByUserId(@RequestBody @Valid ProfileInput profileInput, HttpSession session){
 		
-		ResponseEntity<ProfileVO> response = null;
+		ResponseEntity<ProfileResponse> response = null;
 		UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute("userLoginDetail");
-		ProfileVO profileVo = profileService.updateProfile(profileInput, userLoginDetail.getUserId());
+		ProfileResponse profileResponse = profileService.updateProfile(profileInput, userLoginDetail.getUserId());
 		
-		HttpStatus status = profileVo != null ? HttpStatus.OK : HttpStatus.NOT_FOUND;
-		response = new ResponseEntity<>(profileVo, status);
+		HttpStatus status = profileResponse != null ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+		response = new ResponseEntity<>(profileResponse, status);
 		return response;
 	}
 	
@@ -84,9 +84,6 @@ public class ProfileController {
 		response = new ResponseEntity<>(isDeleted, status);
 		return response;
 	}
-	
-	
-	
 	
 	
 }

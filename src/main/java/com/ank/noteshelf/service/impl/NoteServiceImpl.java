@@ -19,9 +19,9 @@ import com.ank.noteshelf.model.NsNotesMetaData;
 import com.ank.noteshelf.repository.NoteDataRepository;
 import com.ank.noteshelf.repository.NoteMetaDataRepository;
 import com.ank.noteshelf.resource.NoteInput;
+import com.ank.noteshelf.response.NoteResponse;
 import com.ank.noteshelf.service.NoteService;
 import com.ank.noteshelf.util.NsMessageConstant;
-import com.ank.noteshelf.vo.NoteVO;
 
 @Service
 public class NoteServiceImpl implements NoteService {
@@ -40,7 +40,7 @@ public class NoteServiceImpl implements NoteService {
 	// add debug logger statements.
 	
 	@Transactional
-	public NoteVO createNote(NoteInput noteInput, int userId) {
+	public NoteResponse createNote(NoteInput noteInput, int userId) {
 
 		NsNotesData noteData = new NsNotesData();
 
@@ -60,16 +60,16 @@ public class NoteServiceImpl implements NoteService {
 
 		noteMetaData = noteMetaDataRepository.save(noteMetaData);
  
-		NoteVO noteVo = noteDataMapper.mapNotesToNoteVO(noteData, noteMetaData);
+		NoteResponse noteVo = noteDataMapper.mapNotesToNoteVO(noteData, noteMetaData);
   
 		return noteVo; 
 	}
 	
 	@Override
 	@Transactional
-	public NoteVO updateNote(NoteInput noteInput, int noteId,  int userId) {
+	public NoteResponse updateNote(NoteInput noteInput, int noteId,  int userId) {
 		
-		NoteVO noteVo = null;
+		NoteResponse noteVo = null;
 		NsNotesData noteData = null;
 		NsNotesMetaData noteMetaData = null;
 		Optional<NsNotesMetaData> noteMetaDataOptional = Optional.ofNullable(noteMetaDataRepository.findByNoteIdAndUserId(noteId, userId));
@@ -97,13 +97,13 @@ public class NoteServiceImpl implements NoteService {
 	}
 
 	@Override
-	public NoteVO getNoteById(int noteId, int userId) {
+	public NoteResponse getNoteById(int noteId, int userId) {
 
 		Optional<NsNotesMetaData> noteMetaData = Optional.ofNullable(noteMetaDataRepository.findByNoteIdAndUserId(noteId, userId)); 
 		Optional<NsNotesData> noteData = noteMetaData.isPresent() ? 
 											noteDataRepository.findById(noteMetaData.get().getNoteNosqlId()) 
 											: Optional.ofNullable(null); 
-		NoteVO noteVO = null;
+		NoteResponse noteVO = null;
 		
 		if(noteData.isPresent()) {
 			noteVO = noteDataMapper.mapNotesToNoteVO(noteData.get(), noteMetaData.get());
@@ -115,7 +115,7 @@ public class NoteServiceImpl implements NoteService {
 	}
 
 	@Override
-	public List<NoteVO> getAllNotesByUser(int userId) {
+	public List<NoteResponse> getAllNotesByUser(int userId) {
 
 		List<NsNotesMetaData> notesMetaDataList = noteMetaDataRepository.findByUserId(userId);
   
@@ -130,7 +130,7 @@ public class NoteServiceImpl implements NoteService {
 //								  .map(noteData -> convertNotesDataToNoteVO(noteData))
 //								  .collect(Collectors.toList());
 		
-		List<NoteVO> noteVOList = notesMetaDataList.stream()
+		List<NoteResponse> noteVOList = notesMetaDataList.stream()
 										.map(noteMetaData -> makeNoteVOFromNotesMetaData(noteMetaData))
 										.collect(Collectors.toList());
 
@@ -151,7 +151,7 @@ public class NoteServiceImpl implements NoteService {
 		return isDeleted;
 	}
 	
-	private NoteVO makeNoteVOFromNotesMetaData(NsNotesMetaData noteMetaData) {
+	private NoteResponse makeNoteVOFromNotesMetaData(NsNotesMetaData noteMetaData) {
 		
 		Optional<NsNotesData> noteDataOptional = noteDataRepository.findById(noteMetaData.getNoteNosqlId());
 		NsNotesData noteData = null;
@@ -160,7 +160,7 @@ public class NoteServiceImpl implements NoteService {
 			noteData = noteDataOptional.get();
 		}
 		 
-		NoteVO noteVO = noteDataMapper.mapNotesToNoteVO(noteData, noteMetaData);
+		NoteResponse noteVO = noteDataMapper.mapNotesToNoteVO(noteData, noteMetaData);
 		
 		return noteVO;
 	} 

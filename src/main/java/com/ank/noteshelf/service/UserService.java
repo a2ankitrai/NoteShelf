@@ -1,10 +1,10 @@
 package com.ank.noteshelf.service;
 
 import com.ank.noteshelf.resource.UserSignUpDetail;
-import com.ank.noteshelf.vo.UserVO;
+import com.ank.noteshelf.response.UserResponse;
 
 public interface UserService {
 
-	UserVO registerUser(UserSignUpDetail userSignUpDetail);
+	UserResponse registerUser(UserSignUpDetail userSignUpDetail);
 	
 }

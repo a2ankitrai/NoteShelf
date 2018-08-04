@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ank.noteshelf.resource.NoteInput;
 import com.ank.noteshelf.resource.UserLoginDetail;
+import com.ank.noteshelf.response.NoteResponse;
 import com.ank.noteshelf.service.NoteService;
-import com.ank.noteshelf.vo.NoteVO;
 
 @RequestMapping("/note")
 @RestController
@@ -48,10 +48,10 @@ public class NoteController {
 	 * @return ResponseEntity<NoteVO>
 	 * */
 	@PostMapping
-	public ResponseEntity<NoteVO> createNote(@RequestBody @Valid NoteInput noteInput, HttpSession session) {
+	public ResponseEntity<NoteResponse> createNote(@RequestBody @Valid NoteInput noteInput, HttpSession session) {
 		UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute("userLoginDetail");
-		NoteVO noteVO = noteService.createNote(noteInput, userLoginDetail.getUserId());
-		return new ResponseEntity<NoteVO>(noteVO, HttpStatus.OK);
+		NoteResponse noteResponse = noteService.createNote(noteInput, userLoginDetail.getUserId());
+		return new ResponseEntity<NoteResponse>(noteResponse, HttpStatus.OK);
 	}
 
 	/**
@@ -59,10 +59,10 @@ public class NoteController {
 	 * @return ResponseEntity<List<NoteVO>>
 	 * */
 	@GetMapping("/all")
-	public ResponseEntity<List<NoteVO>> getAllNotes(HttpSession session) {
+	public ResponseEntity<List<NoteResponse>> getAllNotes(HttpSession session) {
 		UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute("userLoginDetail");
-		List<NoteVO> notesList = noteService.getAllNotesByUser(userLoginDetail.getUserId());
-		return new ResponseEntity<List<NoteVO>>(notesList, HttpStatus.OK);
+		List<NoteResponse> noteResponseList = noteService.getAllNotesByUser(userLoginDetail.getUserId());
+		return new ResponseEntity<List<NoteResponse>>(noteResponseList, HttpStatus.OK);
 	}
 
 	/**
@@ -77,16 +77,16 @@ public class NoteController {
 	 * @return ResponseEntity<NoteVO>
 	 * */
 	@GetMapping("/{id}")
-	public ResponseEntity<NoteVO> getNoteById(@PathVariable(value = "id") int noteId, HttpSession session) {
+	public ResponseEntity<NoteResponse> getNoteById(@PathVariable(value = "id") int noteId, HttpSession session) {
 
-		NoteVO noteVO = null;
-		ResponseEntity<NoteVO> response = null;
+		NoteResponse noteResponse = null;
+		ResponseEntity<NoteResponse> response = null;
 
 		UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute("userLoginDetail");
-		noteVO = noteService.getNoteById(noteId, userLoginDetail.getUserId());
+		noteResponse = noteService.getNoteById(noteId, userLoginDetail.getUserId());
 
-		HttpStatus status = noteVO != null ? HttpStatus.OK : HttpStatus.NOT_FOUND;
-		response = new ResponseEntity<>(noteVO, status);
+		HttpStatus status = noteResponse != null ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+		response = new ResponseEntity<>(noteResponse, status);
 		return response;
 	}
 	
@@ -95,12 +95,12 @@ public class NoteController {
 	 * @return ResponseEntity<NoteVO>
 	 * */
 	@PutMapping({"/{id}"})
-	public ResponseEntity<NoteVO> updateNoteById(@PathVariable(value = "id") int noteId, @RequestBody @Valid NoteInput noteInput, HttpSession session) {
+	public ResponseEntity<NoteResponse> updateNoteById(@PathVariable(value = "id") int noteId, @RequestBody @Valid NoteInput noteInput, HttpSession session) {
 		
-		ResponseEntity<NoteVO> response = null;
+		ResponseEntity<NoteResponse> response = null;
 		UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute("userLoginDetail");
-		NoteVO noteVO = noteService.updateNote(noteInput, noteId, userLoginDetail.getUserId());
-		response = new ResponseEntity<NoteVO>(noteVO, HttpStatus.OK);
+		NoteResponse noteResponse = noteService.updateNote(noteInput, noteId, userLoginDetail.getUserId());
+		response = new ResponseEntity<NoteResponse>(noteResponse, HttpStatus.OK);
 		return response;
 	}
 	

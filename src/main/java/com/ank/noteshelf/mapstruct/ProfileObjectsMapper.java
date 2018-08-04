@@ -6,7 +6,7 @@ import org.mapstruct.factory.Mappers;
 
 import com.ank.noteshelf.model.NsUserProfile;
 import com.ank.noteshelf.resource.ProfileInput;
-import com.ank.noteshelf.vo.ProfileVO;
+import com.ank.noteshelf.response.ProfileResponse;
 
 @Mapper
 public interface ProfileObjectsMapper {
@@ -22,7 +22,7 @@ public interface ProfileObjectsMapper {
 	@Mapping(source = "profile.language", target = "language")
 	@Mapping(source = "profile.createdDate", target = "createdDate")
 	@Mapping(source = "profile.updatedDate", target = "updatedDate")
-	ProfileVO mapUserProfileToProfileVO(NsUserProfile profile);
+	ProfileResponse mapUserProfileToProfileVO(NsUserProfile profile);
  
 	@Mapping(source = "profileInput.gender", target = "gender")
 	@Mapping(source = "profileInput.work", target = "work")
@@ -33,6 +33,6 @@ public interface ProfileObjectsMapper {
 	@Mapping(source = "existingProfile.userId", target = "userId")
 	@Mapping(source = "existingProfile.userProfileId", target = "userProfileId")
 	@Mapping(source = "existingProfile.createdDate", target = "createdDate")
-	NsUserProfile mapProfileInputAndUserIdToUserProfile(ProfileInput profileInput, NsUserProfile existingProfile);
+	NsUserProfile mapProfileInputAndExistingProfileToUserProfile(ProfileInput profileInput, NsUserProfile existingProfile);
 	
 }

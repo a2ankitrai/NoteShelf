@@ -12,9 +12,9 @@ import com.ank.noteshelf.mapstruct.ProfileObjectsMapper;
 import com.ank.noteshelf.model.NsUserProfile;
 import com.ank.noteshelf.repository.ProfileRepository;
 import com.ank.noteshelf.resource.ProfileInput;
+import com.ank.noteshelf.response.ProfileResponse;
 import com.ank.noteshelf.service.ProfileService;
 import com.ank.noteshelf.util.NsMessageConstant;
-import com.ank.noteshelf.vo.ProfileVO;
 
 @Service
 public class ProfileServiceImpl implements ProfileService{
@@ -23,35 +23,38 @@ public class ProfileServiceImpl implements ProfileService{
 	ProfileRepository profileRepository;
 	
 	@Override
-	public ProfileVO getProfileByUserId(int userId) {
+	public ProfileResponse getProfileByUserId(int userId) {
 		
 		Optional<NsUserProfile> userProfile = profileRepository.findByUserId(userId);
-		ProfileVO profileVo = null;
+		ProfileResponse profileResponse = null;
 		
 		if(userProfile.isPresent()) {
-			profileVo = ProfileObjectsMapper.INSTANCE.mapUserProfileToProfileVO(userProfile.get());
+			profileResponse = ProfileObjectsMapper.INSTANCE.mapUserProfileToProfileVO(userProfile.get());
 		}
 		else {
 			throw new EmptyResultDataAccessException(NsMessageConstant.NO_PROFILE_FOUND_BY_ID,1);
 		}
-		return profileVo;
+		return profileResponse;
 	}
 
 	@Override
 	@Transactional
-	public ProfileVO updateProfile(ProfileInput profileInput, int userId) {
+	public ProfileResponse updateProfile(ProfileInput profileInput, int userId) {
 		
-		ProfileVO profileVo = null;
+		ProfileResponse profileResponse = null;
 		NsUserProfile userProfile = null;
 		Optional<NsUserProfile> userProfileOptional = profileRepository.findByUserId(userId);
 
 		if(userProfileOptional.isPresent()) { 
-			userProfile = ProfileObjectsMapper.INSTANCE.mapProfileInputAndUserIdToUserProfile(profileInput, userProfileOptional.get());
+			userProfile = ProfileObjectsMapper.INSTANCE.mapProfileInputAndExistingProfileToUserProfile(profileInput, userProfileOptional.get());
 			userProfile.setUpdatedDate(new Date());
 			userProfile = profileRepository.save(userProfile);
 		} 
-		profileVo = ProfileObjectsMapper.INSTANCE.mapUserProfileToProfileVO(userProfile);
-		return profileVo;
+		else {
+			throw new EmptyResultDataAccessException(NsMessageConstant.NO_PROFILE_FOUND_BY_ID,1);
+		}
+		profileResponse = ProfileObjectsMapper.INSTANCE.mapUserProfileToProfileVO(userProfile);
+		return profileResponse;
 	}
 
 	@Override

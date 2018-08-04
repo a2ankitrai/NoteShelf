@@ -20,8 +20,8 @@ import com.ank.noteshelf.repository.UserProfileRepository;
 import com.ank.noteshelf.repository.UserRepository;
 import com.ank.noteshelf.resource.Role;
 import com.ank.noteshelf.resource.UserSignUpDetail;
+import com.ank.noteshelf.response.UserResponse;
 import com.ank.noteshelf.service.UserService;
-import com.ank.noteshelf.vo.UserVO;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
 	  
 	@Override
 	@Transactional
-	public UserVO registerUser(UserSignUpDetail userSignUpDetail) {
+	public UserResponse registerUser(UserSignUpDetail userSignUpDetail) {
 		
 		logger.debug("UserServiceImpl :: registerUser :: start ");
 		
@@ -67,13 +67,13 @@ public class UserServiceImpl implements UserService {
 		NsUserProfile userProfile = UserObjectsMapper.INSTANCE.mapUserToUserProfile(user);
 		userProfile = userProfileRepository.save(userProfile);
 		
-		UserVO userVO = null; 
+		UserResponse userResponse = null; 
 		if(user != null && userAuthDetail != null) {
-			userVO = UserObjectsMapper.INSTANCE.mapUserToUserVO(user, userProfile, userRole, userAuthDetail);
+			userResponse = UserObjectsMapper.INSTANCE.mapUserToUserVO(user, userProfile, userRole, userAuthDetail);
 		}
 		 
 		logger.debug("UserServiceImpl :: registerUser :: end ");
-		return userVO;
+		return userResponse;
 	}
 	
 	private boolean emailExist(final String email) {

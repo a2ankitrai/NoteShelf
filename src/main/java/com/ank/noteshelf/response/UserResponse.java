@@ -1,4 +1,4 @@
-package com.ank.noteshelf.vo;
+package com.ank.noteshelf.response;
 
 import java.util.Date;
 
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserVO {
+public class UserResponse {
 
 	private int userId;
 	 

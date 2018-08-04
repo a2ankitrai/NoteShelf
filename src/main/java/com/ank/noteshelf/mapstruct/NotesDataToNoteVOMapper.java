@@ -5,7 +5,7 @@ import org.mapstruct.Mapping;
 
 import com.ank.noteshelf.model.NsNotesData;
 import com.ank.noteshelf.model.NsNotesMetaData;
-import com.ank.noteshelf.vo.NoteVO;
+import com.ank.noteshelf.response.NoteResponse;
 
 @Mapper
 public interface NotesDataToNoteVOMapper {
@@ -15,7 +15,7 @@ public interface NotesDataToNoteVOMapper {
 	@Mapping(source = "noteMetaData.noteId", target = "noteId")
 	@Mapping(source = "noteMetaData.createdDate", target = "createdDate")
 	@Mapping(source = "noteMetaData.updatedDate", target = "updatedDate")
-	NoteVO mapNotesToNoteVO(NsNotesData noteData, NsNotesMetaData noteMetaData);
+	NoteResponse mapNotesToNoteVO(NsNotesData noteData, NsNotesMetaData noteMetaData);
 	
 	
 	

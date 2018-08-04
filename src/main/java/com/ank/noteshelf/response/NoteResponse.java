@@ -1,4 +1,4 @@
-package com.ank.noteshelf.vo;
+package com.ank.noteshelf.response;
 
 import java.util.Date;
 
@@ -11,16 +11,16 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ProfileVO {
-
-	private int profileId;
-	private String gender;
-	private String work;
-	private String contactNumber;
-	private String birthDate;
-	private String birthYear;
-	private String language;
-	private Date createdDate;
-	private Date updatedDate;
+public class NoteResponse {
 	
+	private int noteId;
+	
+	private String noteTitle;
+	
+	private String noteContent;
+	
+	private Date createdDate;
+	 
+	private Date updatedDate;
+
 }
