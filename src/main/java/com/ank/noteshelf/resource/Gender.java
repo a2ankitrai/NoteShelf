@@ -1,4 +1,4 @@
-package com.ank.noteshelf.util;
+package com.ank.noteshelf.resource;
 
 import java.util.Arrays;
 

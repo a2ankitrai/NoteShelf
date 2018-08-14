@@ -1,6 +1,7 @@
 package com.ank.noteshelf.response;
 
 import java.util.Date;
+import java.util.UUID;
 
 import com.ank.noteshelf.resource.Role;
 
@@ -13,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserResponse {
 
-	private int userId;
+	private UUID userId;
 	 
 	private String firstName;
 	
@@ -25,7 +26,7 @@ public class UserResponse {
 	
 	private Role role;
 	
-	private int userProfileId;
+	private UUID userProfileId;
 	
 	private Date createdDate;
 	 

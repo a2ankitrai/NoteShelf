@@ -1,4 +1,4 @@
-package com.ank.apps.noteshelf.util;
+package com.ank.noteshelf.resource;
 
 public class UserConstant {
 

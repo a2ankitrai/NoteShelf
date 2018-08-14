@@ -1,6 +1,7 @@
 package com.ank.noteshelf.response;
 
 import java.util.Date;
+import java.util.UUID;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +14,7 @@ import lombok.ToString;
 @ToString
 public class ProfileResponse {
 
-	private int profileId;
+	private UUID profileId;
 	private String gender;
 	private String work;
 	private String contactNumber;

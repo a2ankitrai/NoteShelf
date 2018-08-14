@@ -10,7 +10,7 @@ import com.ank.noteshelf.model.NsUserRoles;
 @Repository
 public interface RoleRepository extends JpaRepository<NsUserRoles, Integer> {
 
-	NsUserRoles findByUserId(int userId);
+	NsUserRoles findByUserId(byte[] userId);
 	
-	List<NsUserRoles> findAllByUserId(int userId);
+	List<NsUserRoles> findAllByUserId(byte[] userId);
 }

@@ -12,12 +12,12 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-import com.ank.noteshelf.validation.NumericValidator;
+import com.ank.noteshelf.validation.AlphaNumericValidator;
 
 @Documented
 @Retention(RUNTIME)
 @Target({ FIELD, METHOD, PARAMETER })
-@Constraint(validatedBy = {NumericValidator.class})
+@Constraint(validatedBy = {AlphaNumericValidator.class})
 public @interface AlphaNumeric {
 	
 	String message() default "Only Aplha-Numeric characters are allowed.";

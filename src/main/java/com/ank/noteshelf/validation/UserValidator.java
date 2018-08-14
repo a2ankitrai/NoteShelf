@@ -1,6 +1,6 @@
 package com.ank.noteshelf.validation;
 
-import com.ank.noteshelf.resource.UserSignUpDetail;
+import com.ank.noteshelf.input.UserSignUpDetail;
 
 public class UserValidator {
 

@@ -4,16 +4,16 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
+import com.ank.noteshelf.input.ProfileInput;
 import com.ank.noteshelf.model.NsUserProfile;
-import com.ank.noteshelf.resource.ProfileInput;
 import com.ank.noteshelf.response.ProfileResponse;
 
-@Mapper
+@Mapper(uses = {NsCommonMapperFunctions.class})
 public interface ProfileObjectsMapper {
 
 	ProfileObjectsMapper INSTANCE = Mappers.getMapper(ProfileObjectsMapper.class);
 	
-	@Mapping(source = "profile.userProfileId", target = "profileId")
+	@Mapping(source = "profile.userProfileId", target = "profileId", qualifiedByName="mapByteToUuid")
 	@Mapping(source = "profile.gender", target = "gender")
 	@Mapping(source = "profile.work", target = "work")
 	@Mapping(source = "profile.contactNumber", target = "contactNumber")

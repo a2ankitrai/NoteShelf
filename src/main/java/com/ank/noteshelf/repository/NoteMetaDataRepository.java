@@ -10,10 +10,10 @@ import com.ank.noteshelf.model.NsNotesMetaData;
 @Repository
 public interface NoteMetaDataRepository extends JpaRepository<NsNotesMetaData, String>{
 	
-	List<NsNotesMetaData> findByUserId(int userId);
+	List<NsNotesMetaData> findByUserId(byte[] userId);
 	
-	NsNotesMetaData findByNoteIdAndUserId(Integer noteId, int userId);
+	NsNotesMetaData findByNoteIdAndUserId(byte[] noteId, byte[] userId);
 	
-	Integer deleteByNoteIdAndUserId(Integer noteId, int userId);
+	Integer deleteByNoteIdAndUserId(byte[] noteId, byte[] userId);
 
 }

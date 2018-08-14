@@ -13,15 +13,16 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ank.noteshelf.input.NoteInput;
 import com.ank.noteshelf.mapstruct.NotesDataToNoteVOMapper;
 import com.ank.noteshelf.model.NsNotesData;
 import com.ank.noteshelf.model.NsNotesMetaData;
 import com.ank.noteshelf.repository.NoteDataRepository;
 import com.ank.noteshelf.repository.NoteMetaDataRepository;
-import com.ank.noteshelf.resource.NoteInput;
+import com.ank.noteshelf.resource.NsMessageConstant;
 import com.ank.noteshelf.response.NoteResponse;
 import com.ank.noteshelf.service.NoteService;
-import com.ank.noteshelf.util.NsMessageConstant;
+import com.ank.noteshelf.util.UuidUtils;
 
 @Service
 public class NoteServiceImpl implements NoteService {
@@ -40,7 +41,7 @@ public class NoteServiceImpl implements NoteService {
 	// add debug logger statements.
 	
 	@Transactional
-	public NoteResponse createNote(NoteInput noteInput, int userId) {
+	public NoteResponse createNote(NoteInput noteInput, byte[] userId) {
 
 		NsNotesData noteData = new NsNotesData();
 
@@ -51,6 +52,7 @@ public class NoteServiceImpl implements NoteService {
 
 		NsNotesMetaData noteMetaData = new NsNotesMetaData();
 
+		noteMetaData.setNoteId(UuidUtils.generateUuidBytes()); 
 		noteMetaData.setUserId(userId);
 		noteMetaData.setNoteNosqlId(noteData.getId());
 
@@ -67,7 +69,7 @@ public class NoteServiceImpl implements NoteService {
 	
 	@Override
 	@Transactional
-	public NoteResponse updateNote(NoteInput noteInput, int noteId,  int userId) {
+	public NoteResponse updateNote(NoteInput noteInput, byte[] noteId,  byte[] userId) {
 		
 		NoteResponse noteVo = null;
 		NsNotesData noteData = null;
@@ -97,7 +99,7 @@ public class NoteServiceImpl implements NoteService {
 	}
 
 	@Override
-	public NoteResponse getNoteById(int noteId, int userId) {
+	public NoteResponse getNoteById(byte[] noteId, byte[] userId) {
 
 		Optional<NsNotesMetaData> noteMetaData = Optional.ofNullable(noteMetaDataRepository.findByNoteIdAndUserId(noteId, userId)); 
 		Optional<NsNotesData> noteData = noteMetaData.isPresent() ? 
@@ -115,7 +117,7 @@ public class NoteServiceImpl implements NoteService {
 	}
 
 	@Override
-	public List<NoteResponse> getAllNotesByUser(int userId) {
+	public List<NoteResponse> getAllNotesByUser(byte[] userId) {
 
 		List<NsNotesMetaData> notesMetaDataList = noteMetaDataRepository.findByUserId(userId);
   
@@ -138,7 +140,7 @@ public class NoteServiceImpl implements NoteService {
 	}
 	
 	@Transactional
-	public Boolean deleteNoteById(int noteId, int userId) {
+	public Boolean deleteNoteById(byte[] noteId, byte[] userId) {
 		Boolean isDeleted = false;
 		Optional<Integer> val = Optional.ofNullable(noteMetaDataRepository.deleteByNoteIdAndUserId(noteId, userId)); 
 		if(val.isPresent()) {

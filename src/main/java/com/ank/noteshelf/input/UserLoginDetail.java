@@ -1,4 +1,4 @@
-package com.ank.noteshelf.resource;
+package com.ank.noteshelf.input;
 
 import java.util.Collection;
 import java.util.List;
@@ -9,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.ank.noteshelf.model.NsUser;
+import com.ank.noteshelf.resource.AccountFlag;
 
 import lombok.Data;
 
@@ -16,7 +17,7 @@ import lombok.Data;
 public class UserLoginDetail implements UserDetails{
 
 	private static final long serialVersionUID = 1L;
-	private Integer userId;
+	private byte[] userId;
 	private String userName;
 	private String password;
 	private List<String> roles;

@@ -33,3 +33,7 @@ notes/
 /config/*
 !/config/README.md
 !/config/*.example
+
+# arbit
+
+bkp/

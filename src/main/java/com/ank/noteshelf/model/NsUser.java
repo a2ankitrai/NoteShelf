@@ -1,11 +1,9 @@
 package com.ank.noteshelf.model;
-// Generated Jun 16, 2018 12:30:45 AM by Hibernate Tools 5.2.10.Final
+// Generated Aug 15, 2018 3:31:51 AM by Hibernate Tools 5.2.11.Final
 
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -19,97 +17,98 @@ import javax.persistence.UniqueConstraint;
 @Table(name = "NS_USER", catalog = "Note_shelf_DB", uniqueConstraints = @UniqueConstraint(columnNames = "USER_NAME"))
 public class NsUser implements java.io.Serializable {
 
-	private Integer userId;
-	private String userName;
-	private String firstName;
-	private String lastName;
-	private String email;
-	private Date createdDate;
-	private Date updatedDate;
+    private byte[] userId;
+    private String userName;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private Date createdDate;
+    private Date updatedDate;
 
-	public NsUser() {
-	}
+    public NsUser() {
+    }
 
-	public NsUser(String userName) {
-		this.userName = userName;
-	}
+    public NsUser(byte[] userId, String userName) {
+	this.userId = userId;
+	this.userName = userName;
+    }
 
-	public NsUser(String userName, String firstName, String lastName, String email, Date createdDate,
-			Date updatedDate) {
-		this.userName = userName;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		this.createdDate = createdDate;
-		this.updatedDate = updatedDate;
-	}
+    public NsUser(byte[] userId, String userName, String firstName, String lastName, String email, Date createdDate,
+	    Date updatedDate) {
+	this.userId = userId;
+	this.userName = userName;
+	this.firstName = firstName;
+	this.lastName = lastName;
+	this.email = email;
+	this.createdDate = createdDate;
+	this.updatedDate = updatedDate;
+    }
 
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
+    @Id
 
-	@Column(name = "USER_ID", unique = true, nullable = false)
-	public Integer getUserId() {
-		return this.userId;
-	}
+    @Column(name = "USER_ID", unique = true, nullable = false)
+    public byte[] getUserId() {
+	return this.userId;
+    }
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
+    public void setUserId(byte[] userId) {
+	this.userId = userId;
+    }
 
-	@Column(name = "USER_NAME", unique = true, nullable = false, length = 50)
-	public String getUserName() {
-		return this.userName;
-	}
+    @Column(name = "USER_NAME", unique = true, nullable = false, length = 100)
+    public String getUserName() {
+	return this.userName;
+    }
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+    public void setUserName(String userName) {
+	this.userName = userName;
+    }
 
-	@Column(name = "FIRST_NAME", length = 50)
-	public String getFirstName() {
-		return this.firstName;
-	}
+    @Column(name = "FIRST_NAME", length = 100)
+    public String getFirstName() {
+	return this.firstName;
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    public void setFirstName(String firstName) {
+	this.firstName = firstName;
+    }
 
-	@Column(name = "LAST_NAME", length = 50)
-	public String getLastName() {
-		return this.lastName;
-	}
+    @Column(name = "LAST_NAME", length = 100)
+    public String getLastName() {
+	return this.lastName;
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    public void setLastName(String lastName) {
+	this.lastName = lastName;
+    }
 
-	@Column(name = "EMAIL", length = 50)
-	public String getEmail() {
-		return this.email;
-	}
+    @Column(name = "EMAIL", length = 100)
+    public String getEmail() {
+	return this.email;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setEmail(String email) {
+	this.email = email;
+    }
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "CREATED_DATE", length = 26)
-	public Date getCreatedDate() {
-		return this.createdDate;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "CREATED_DATE", length = 19)
+    public Date getCreatedDate() {
+	return this.createdDate;
+    }
 
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
+    public void setCreatedDate(Date createdDate) {
+	this.createdDate = createdDate;
+    }
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "UPDATED_DATE", length = 26)
-	public Date getUpdatedDate() {
-		return this.updatedDate;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "UPDATED_DATE", length = 19)
+    public Date getUpdatedDate() {
+	return this.updatedDate;
+    }
 
-	public void setUpdatedDate(Date updatedDate) {
-		this.updatedDate = updatedDate;
-	}
+    public void setUpdatedDate(Date updatedDate) {
+	this.updatedDate = updatedDate;
+    }
 
 }

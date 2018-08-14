@@ -8,5 +8,5 @@ import com.ank.noteshelf.model.NsUserAuthDetail;
 @Repository
 public interface UserAuthDetailRepository extends JpaRepository<NsUserAuthDetail, String> {
 
-	NsUserAuthDetail findByUserId(int userId);
+	NsUserAuthDetail findByUserId(byte[] userId);
 }

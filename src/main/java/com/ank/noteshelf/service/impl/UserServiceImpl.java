@@ -1,6 +1,7 @@
 package com.ank.noteshelf.service.impl;
 
 import java.util.Date;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ank.noteshelf.exception.NsRuntimeException;
+import com.ank.noteshelf.input.UserSignUpDetail;
 import com.ank.noteshelf.mapstruct.UserObjectsMapper;
 import com.ank.noteshelf.model.NsUser;
 import com.ank.noteshelf.model.NsUserAuthDetail;
@@ -19,9 +21,9 @@ import com.ank.noteshelf.repository.UserAuthDetailRepository;
 import com.ank.noteshelf.repository.UserProfileRepository;
 import com.ank.noteshelf.repository.UserRepository;
 import com.ank.noteshelf.resource.Role;
-import com.ank.noteshelf.resource.UserSignUpDetail;
 import com.ank.noteshelf.response.UserResponse;
 import com.ank.noteshelf.service.UserService;
+import com.ank.noteshelf.util.UuidUtils;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -55,16 +57,18 @@ public class UserServiceImpl implements UserService {
         }
 		
 		Date now = new Date();
-		NsUser user = UserObjectsMapper.INSTANCE.mapUserSignUpToNsUser(userSignUpDetail, now);
+		
+		UUID userId = UuidUtils.generateRandomUuid();
+		NsUser user = UserObjectsMapper.INSTANCE.mapUserSignUpToNsUser(userSignUpDetail, now, userId);
 		user = userRepository.save(user);
-		   
-		NsUserAuthDetail userAuthDetail = UserObjectsMapper.INSTANCE.mapUserSignUpToUserAuthDetail(user, userSignUpDetail);
+		    
+		NsUserAuthDetail userAuthDetail = UserObjectsMapper.INSTANCE.mapUserSignUpToUserAuthDetail(user, userSignUpDetail, userId);
 		userAuthDetail = userAuthDetailRepository.save(userAuthDetail);
- 	
-		NsUserRoles userRole = UserObjectsMapper.INSTANCE.mapUserToUserRoles(user, Role.USER.toString());
+
+		NsUserRoles userRole = UserObjectsMapper.INSTANCE.mapUserToUserRoles(user, Role.USER.toString(), UuidUtils.generateRandomUuid());
 		userRole = roleRepository.save(userRole);
- 
-		NsUserProfile userProfile = UserObjectsMapper.INSTANCE.mapUserToUserProfile(user);
+
+		NsUserProfile userProfile = UserObjectsMapper.INSTANCE.mapUserToUserProfile(user, userId);
 		userProfile = userProfileRepository.save(userProfile);
 		
 		UserResponse userResponse = null; 

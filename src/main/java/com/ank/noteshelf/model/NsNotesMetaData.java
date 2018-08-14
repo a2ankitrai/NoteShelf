@@ -1,11 +1,9 @@
 package com.ank.noteshelf.model;
-// Generated Jun 16, 2018 12:30:45 AM by Hibernate Tools 5.2.10.Final
+// Generated Aug 15, 2018 3:31:51 AM by Hibernate Tools 5.2.11.Final
 
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -18,74 +16,74 @@ import javax.persistence.TemporalType;
 @Table(name = "NS_NOTES_META_DATA", catalog = "Note_shelf_DB")
 public class NsNotesMetaData implements java.io.Serializable {
 
-	private Integer noteId;
-	private int userId;
-	private String noteNosqlId;
-	private Date createdDate;
-	private Date updatedDate;
+    private byte[] noteId;
+    private byte[] userId;
+    private String noteNosqlId;
+    private Date createdDate;
+    private Date updatedDate;
 
-	public NsNotesMetaData() {
-	}
+    public NsNotesMetaData() {
+    }
 
-	public NsNotesMetaData(int userId) {
-		this.userId = userId;
-	}
+    public NsNotesMetaData(byte[] noteId) {
+	this.noteId = noteId;
+    }
 
-	public NsNotesMetaData(int userId, String noteNosqlId, Date createdDate, Date updatedDate) {
-		this.userId = userId;
-		this.noteNosqlId = noteNosqlId;
-		this.createdDate = createdDate;
-		this.updatedDate = updatedDate;
-	}
+    public NsNotesMetaData(byte[] noteId, byte[] userId, String noteNosqlId, Date createdDate, Date updatedDate) {
+	this.noteId = noteId;
+	this.userId = userId;
+	this.noteNosqlId = noteNosqlId;
+	this.createdDate = createdDate;
+	this.updatedDate = updatedDate;
+    }
 
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
+    @Id
 
-	@Column(name = "NOTE_ID", unique = true, nullable = false)
-	public Integer getNoteId() {
-		return this.noteId;
-	}
+    @Column(name = "NOTE_ID", unique = true, nullable = false)
+    public byte[] getNoteId() {
+	return this.noteId;
+    }
 
-	public void setNoteId(Integer noteId) {
-		this.noteId = noteId;
-	}
+    public void setNoteId(byte[] noteId) {
+	this.noteId = noteId;
+    }
 
-	@Column(name = "USER_ID", nullable = false)
-	public int getUserId() {
-		return this.userId;
-	}
+    @Column(name = "USER_ID")
+    public byte[] getUserId() {
+	return this.userId;
+    }
 
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
+    public void setUserId(byte[] userId) {
+	this.userId = userId;
+    }
 
-	@Column(name = "NOTE_NOSQL_ID", length = 100)
-	public String getNoteNosqlId() {
-		return this.noteNosqlId;
-	}
+    @Column(name = "NOTE_NOSQL_ID", length = 100)
+    public String getNoteNosqlId() {
+	return this.noteNosqlId;
+    }
 
-	public void setNoteNosqlId(String noteNosqlId) {
-		this.noteNosqlId = noteNosqlId;
-	}
+    public void setNoteNosqlId(String noteNosqlId) {
+	this.noteNosqlId = noteNosqlId;
+    }
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "CREATED_DATE", length = 26)
-	public Date getCreatedDate() {
-		return this.createdDate;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "CREATED_DATE", length = 19)
+    public Date getCreatedDate() {
+	return this.createdDate;
+    }
 
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
+    public void setCreatedDate(Date createdDate) {
+	this.createdDate = createdDate;
+    }
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "UPDATED_DATE", length = 26)
-	public Date getUpdatedDate() {
-		return this.updatedDate;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "UPDATED_DATE", length = 19)
+    public Date getUpdatedDate() {
+	return this.updatedDate;
+    }
 
-	public void setUpdatedDate(Date updatedDate) {
-		this.updatedDate = updatedDate;
-	}
+    public void setUpdatedDate(Date updatedDate) {
+	this.updatedDate = updatedDate;
+    }
 
 }

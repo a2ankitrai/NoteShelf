@@ -1,4 +1,4 @@
-package com.ank.noteshelf.resource;
+package com.ank.noteshelf.input;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;

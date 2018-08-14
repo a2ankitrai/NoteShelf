@@ -1,6 +1,7 @@
 package com.ank.noteshelf.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -19,10 +20,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ank.noteshelf.resource.NoteInput;
-import com.ank.noteshelf.resource.UserLoginDetail;
+import com.ank.noteshelf.input.NoteInput;
+import com.ank.noteshelf.input.UserLoginDetail;
 import com.ank.noteshelf.response.NoteResponse;
 import com.ank.noteshelf.service.NoteService;
+import com.ank.noteshelf.util.UuidUtils;
 
 @RequestMapping("/note")
 @RestController
@@ -77,13 +79,13 @@ public class NoteController {
 	 * @return ResponseEntity<NoteVO>
 	 * */
 	@GetMapping("/{id}")
-	public ResponseEntity<NoteResponse> getNoteById(@PathVariable(value = "id") int noteId, HttpSession session) {
+	public ResponseEntity<NoteResponse> getNoteById(@PathVariable(value = "id") String noteId, HttpSession session) {
 
 		NoteResponse noteResponse = null;
 		ResponseEntity<NoteResponse> response = null;
 
 		UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute("userLoginDetail");
-		noteResponse = noteService.getNoteById(noteId, userLoginDetail.getUserId());
+		noteResponse = noteService.getNoteById(UuidUtils.asBytesFromString(noteId), userLoginDetail.getUserId());
 
 		HttpStatus status = noteResponse != null ? HttpStatus.OK : HttpStatus.NOT_FOUND;
 		response = new ResponseEntity<>(noteResponse, status);
@@ -95,11 +97,11 @@ public class NoteController {
 	 * @return ResponseEntity<NoteVO>
 	 * */
 	@PutMapping({"/{id}"})
-	public ResponseEntity<NoteResponse> updateNoteById(@PathVariable(value = "id") int noteId, @RequestBody @Valid NoteInput noteInput, HttpSession session) {
+	public ResponseEntity<NoteResponse> updateNoteById(@PathVariable(value = "id") String noteId, @RequestBody @Valid NoteInput noteInput, HttpSession session) {
 		
 		ResponseEntity<NoteResponse> response = null;
 		UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute("userLoginDetail");
-		NoteResponse noteResponse = noteService.updateNote(noteInput, noteId, userLoginDetail.getUserId());
+		NoteResponse noteResponse = noteService.updateNote(noteInput, UuidUtils.asBytesFromString(noteId), userLoginDetail.getUserId());
 		response = new ResponseEntity<NoteResponse>(noteResponse, HttpStatus.OK);
 		return response;
 	}
@@ -109,7 +111,7 @@ public class NoteController {
 	 * @return ResponseEntity<Boolean>
 	 * */
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Boolean> deleteNoteById(@PathVariable(value = "id") int noteId, HttpSession session) {
+	public ResponseEntity<Boolean> deleteNoteById(@PathVariable(value = "id") String noteId, HttpSession session) {
 
 		/**
 		 * If the delete target doesn't exist, return 404(Not Found). 
@@ -122,7 +124,7 @@ public class NoteController {
 		ResponseEntity<Boolean> response = null;
 
 		UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute("userLoginDetail");
-		isDeleted = noteService.deleteNoteById(noteId, userLoginDetail.getUserId());
+		isDeleted = noteService.deleteNoteById(UuidUtils.asBytesFromString(noteId), userLoginDetail.getUserId());
 
 		HttpStatus status = isDeleted ? HttpStatus.OK : HttpStatus.NOT_FOUND;
 		response = new ResponseEntity<>(isDeleted, status);

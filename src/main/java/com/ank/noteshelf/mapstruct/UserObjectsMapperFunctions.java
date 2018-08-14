@@ -25,6 +25,5 @@ public class UserObjectsMapperFunctions {
 	public Role mapUserRole(String roleName) {
 		return Role.fromString(roleName);
 	}
-	
-	
+ 	
 }

@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ank.noteshelf.resource.UserLoginDetail;
-import com.ank.noteshelf.resource.UserSignUpDetail;
+import com.ank.noteshelf.input.UserLoginDetail;
+import com.ank.noteshelf.input.UserSignUpDetail;
 import com.ank.noteshelf.response.UserResponse;
 import com.ank.noteshelf.service.UserService;
 

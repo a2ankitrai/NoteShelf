@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.ank.noteshelf.model.NsUser;
  
 @Repository
-public interface UserRepository extends JpaRepository<NsUser, String> {
+public interface UserRepository extends JpaRepository<NsUser, byte[]> {
 	/**
 	 * PagingAndSortingRepository could also have been extended for pagination extension
 	 * */

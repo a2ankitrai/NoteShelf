@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.ank.noteshelf.input.UserLoginDetail;
 import com.ank.noteshelf.model.NsUser;
 import com.ank.noteshelf.model.NsUserAuthDetail;
 import com.ank.noteshelf.model.NsUserRoles;
@@ -16,8 +17,7 @@ import com.ank.noteshelf.repository.RoleRepository;
 import com.ank.noteshelf.repository.UserAuthDetailRepository;
 import com.ank.noteshelf.repository.UserRepository;
 import com.ank.noteshelf.resource.AccountFlag;
-import com.ank.noteshelf.resource.UserLoginDetail;
-import com.ank.noteshelf.util.UserConstant;
+import com.ank.noteshelf.resource.UserConstant;
 
 @Service
 public class NsUserDetailServiceImpl implements UserDetailsService{

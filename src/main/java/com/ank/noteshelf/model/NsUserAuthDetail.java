@@ -1,11 +1,9 @@
 package com.ank.noteshelf.model;
-// Generated Jun 16, 2018 12:30:45 AM by Hibernate Tools 5.2.10.Final
+// Generated Aug 15, 2018 3:31:51 AM by Hibernate Tools 5.2.11.Final
 
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -18,131 +16,132 @@ import javax.persistence.TemporalType;
 @Table(name = "NS_USER_AUTH_DETAIL", catalog = "Note_shelf_DB")
 public class NsUserAuthDetail implements java.io.Serializable {
 
-	private Integer userAuthDetailId;
-	private int userId;
-	private String password;
-	private String authType;
-	private String accountNonLocked;
-	private String accountNonExpired;
-	private String credentialsNonExpired;
-	private String enabled;
-	private Date createdDate;
-	private Date updatedDate;
+    private byte[] userAuthDetailId;
+    private byte[] userId;
+    private String password;
+    private String authType;
+    private String accountNonLocked;
+    private String accountNonExpired;
+    private String credentialsNonExpired;
+    private String enabled;
+    private Date createdDate;
+    private Date updatedDate;
 
-	public NsUserAuthDetail() {
-	}
+    public NsUserAuthDetail() {
+    }
 
-	public NsUserAuthDetail(int userId) {
-		this.userId = userId;
-	}
+    public NsUserAuthDetail(byte[] userAuthDetailId, byte[] userId) {
+	this.userAuthDetailId = userAuthDetailId;
+	this.userId = userId;
+    }
 
-	public NsUserAuthDetail(int userId, String password, String authType, String accountNonLocked,
-			String accountNonExpired, String credentialsNonExpired, String enabled, Date createdDate,
-			Date updatedDate) {
-		this.userId = userId;
-		this.password = password;
-		this.authType = authType;
-		this.accountNonLocked = accountNonLocked;
-		this.accountNonExpired = accountNonExpired;
-		this.credentialsNonExpired = credentialsNonExpired;
-		this.enabled = enabled;
-		this.createdDate = createdDate;
-		this.updatedDate = updatedDate;
-	}
+    public NsUserAuthDetail(byte[] userAuthDetailId, byte[] userId, String password, String authType,
+	    String accountNonLocked, String accountNonExpired, String credentialsNonExpired, String enabled,
+	    Date createdDate, Date updatedDate) {
+	this.userAuthDetailId = userAuthDetailId;
+	this.userId = userId;
+	this.password = password;
+	this.authType = authType;
+	this.accountNonLocked = accountNonLocked;
+	this.accountNonExpired = accountNonExpired;
+	this.credentialsNonExpired = credentialsNonExpired;
+	this.enabled = enabled;
+	this.createdDate = createdDate;
+	this.updatedDate = updatedDate;
+    }
 
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
+    @Id
 
-	@Column(name = "USER_AUTH_DETAIL_ID", unique = true, nullable = false)
-	public Integer getUserAuthDetailId() {
-		return this.userAuthDetailId;
-	}
+    @Column(name = "USER_AUTH_DETAIL_ID", unique = true, nullable = false)
+    public byte[] getUserAuthDetailId() {
+	return this.userAuthDetailId;
+    }
 
-	public void setUserAuthDetailId(Integer userAuthDetailId) {
-		this.userAuthDetailId = userAuthDetailId;
-	}
+    public void setUserAuthDetailId(byte[] userAuthDetailId) {
+	this.userAuthDetailId = userAuthDetailId;
+    }
 
-	@Column(name = "USER_ID", nullable = false)
-	public int getUserId() {
-		return this.userId;
-	}
+    @Column(name = "USER_ID", nullable = false)
+    public byte[] getUserId() {
+	return this.userId;
+    }
 
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
+    public void setUserId(byte[] userId) {
+	this.userId = userId;
+    }
 
-	@Column(name = "PASSWORD", length = 256)
-	public String getPassword() {
-		return this.password;
-	}
+    @Column(name = "PASSWORD", length = 256)
+    public String getPassword() {
+	return this.password;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setPassword(String password) {
+	this.password = password;
+    }
 
-	@Column(name = "AUTH_TYPE", length = 256)
-	public String getAuthType() {
-		return this.authType;
-	}
+    @Column(name = "AUTH_TYPE", length = 50)
+    public String getAuthType() {
+	return this.authType;
+    }
 
-	public void setAuthType(String authType) {
-		this.authType = authType;
-	}
+    public void setAuthType(String authType) {
+	this.authType = authType;
+    }
 
-	@Column(name = "ACCOUNT_NON_LOCKED", length = 1)
-	public String getAccountNonLocked() {
-		return this.accountNonLocked;
-	}
+    @Column(name = "ACCOUNT_NON_LOCKED", length = 1)
+    public String getAccountNonLocked() {
+	return this.accountNonLocked;
+    }
 
-	public void setAccountNonLocked(String accountNonLocked) {
-		this.accountNonLocked = accountNonLocked;
-	}
+    public void setAccountNonLocked(String accountNonLocked) {
+	this.accountNonLocked = accountNonLocked;
+    }
 
-	@Column(name = "ACCOUNT_NON_EXPIRED", length = 1)
-	public String getAccountNonExpired() {
-		return this.accountNonExpired;
-	}
+    @Column(name = "ACCOUNT_NON_EXPIRED", length = 1)
+    public String getAccountNonExpired() {
+	return this.accountNonExpired;
+    }
 
-	public void setAccountNonExpired(String accountNonExpired) {
-		this.accountNonExpired = accountNonExpired;
-	}
+    public void setAccountNonExpired(String accountNonExpired) {
+	this.accountNonExpired = accountNonExpired;
+    }
 
-	@Column(name = "CREDENTIALS_NON_EXPIRED", length = 1)
-	public String getCredentialsNonExpired() {
-		return this.credentialsNonExpired;
-	}
+    @Column(name = "CREDENTIALS_NON_EXPIRED", length = 1)
+    public String getCredentialsNonExpired() {
+	return this.credentialsNonExpired;
+    }
 
-	public void setCredentialsNonExpired(String credentialsNonExpired) {
-		this.credentialsNonExpired = credentialsNonExpired;
-	}
+    public void setCredentialsNonExpired(String credentialsNonExpired) {
+	this.credentialsNonExpired = credentialsNonExpired;
+    }
 
-	@Column(name = "ENABLED", length = 1)
-	public String getEnabled() {
-		return this.enabled;
-	}
+    @Column(name = "ENABLED", length = 1)
+    public String getEnabled() {
+	return this.enabled;
+    }
 
-	public void setEnabled(String enabled) {
-		this.enabled = enabled;
-	}
+    public void setEnabled(String enabled) {
+	this.enabled = enabled;
+    }
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "CREATED_DATE", length = 26)
-	public Date getCreatedDate() {
-		return this.createdDate;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "CREATED_DATE", length = 19)
+    public Date getCreatedDate() {
+	return this.createdDate;
+    }
 
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
+    public void setCreatedDate(Date createdDate) {
+	this.createdDate = createdDate;
+    }
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "UPDATED_DATE", length = 26)
-	public Date getUpdatedDate() {
-		return this.updatedDate;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "UPDATED_DATE", length = 19)
+    public Date getUpdatedDate() {
+	return this.updatedDate;
+    }
 
-	public void setUpdatedDate(Date updatedDate) {
-		this.updatedDate = updatedDate;
-	}
+    public void setUpdatedDate(Date updatedDate) {
+	this.updatedDate = updatedDate;
+    }
 
 }

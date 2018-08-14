@@ -79,11 +79,11 @@
 			<artifactId>jedis</artifactId>
 		</dependency>
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
 			<scope>runtime</scope>
-		</dependency>
+		</dependency> -->
 
 		<dependency>
 			<groupId>mysql</groupId>
@@ -92,10 +92,10 @@
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/io.projectreactor/reactor-core -->
+		<!-- used in actuators -->
 		<dependency>
 			<groupId>io.projectreactor</groupId>
 			<artifactId>reactor-core</artifactId>
-
 		</dependency>
 
 		<!-- Logger: https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
@@ -116,10 +116,10 @@
 			<version>${org.projectlombok.version}</version>
 			<optional>true</optional>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.mapstruct</groupId>
-			<artifactId>mapstruct-jdk8</artifactId> <!-- use mapstruct-jdk8 for Java 8 or higher -->
+			<artifactId>mapstruct-jdk8</artifactId>
 			<version>${org.mapstruct.version}</version>
 		</dependency>
 

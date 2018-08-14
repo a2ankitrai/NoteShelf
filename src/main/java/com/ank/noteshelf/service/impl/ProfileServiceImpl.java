@@ -7,14 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.ank.noteshelf.input.ProfileInput;
 import com.ank.noteshelf.mapstruct.ProfileObjectsMapper;
 import com.ank.noteshelf.model.NsUserProfile;
 import com.ank.noteshelf.repository.ProfileRepository;
-import com.ank.noteshelf.resource.ProfileInput;
+import com.ank.noteshelf.resource.NsMessageConstant;
+import com.ank.noteshelf.response.NsGenericResponse;
+import com.ank.noteshelf.response.PictureResponse;
 import com.ank.noteshelf.response.ProfileResponse;
 import com.ank.noteshelf.service.ProfileService;
-import com.ank.noteshelf.util.NsMessageConstant;
 
 @Service
 public class ProfileServiceImpl implements ProfileService{
@@ -23,7 +26,7 @@ public class ProfileServiceImpl implements ProfileService{
 	ProfileRepository profileRepository;
 	
 	@Override
-	public ProfileResponse getProfileByUserId(int userId) {
+	public ProfileResponse getProfileByUserId(byte[] userId) {
 		
 		Optional<NsUserProfile> userProfile = profileRepository.findByUserId(userId);
 		ProfileResponse profileResponse = null;
@@ -39,7 +42,7 @@ public class ProfileServiceImpl implements ProfileService{
 
 	@Override
 	@Transactional
-	public ProfileResponse updateProfile(ProfileInput profileInput, int userId) {
+	public ProfileResponse updateProfile(ProfileInput profileInput, byte[] userId) {
 		
 		ProfileResponse profileResponse = null;
 		NsUserProfile userProfile = null;
@@ -58,7 +61,7 @@ public class ProfileServiceImpl implements ProfileService{
 	}
 
 	@Override
-	public Boolean deleteProfileByUserId(int userId) {
+	public Boolean deleteProfileByUserId(byte[] userId) {
 		Boolean isDeleted = false;
 		Optional<NsUserProfile> userProfileOptional = profileRepository.findByUserId(userId);
 		
@@ -72,6 +75,23 @@ public class ProfileServiceImpl implements ProfileService{
 		return isDeleted;
 	}
 
-	
-	
+	@Override
+	public PictureResponse uploadProfilePicture(MultipartFile picture, byte[] userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public NsGenericResponse deleteProfilePicture(byte[] userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PictureResponse getProfilePictureByUserId(byte[] userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+ 
+ 
 }
