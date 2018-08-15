@@ -91,8 +91,7 @@ public class ProfileController {
 
 	@PutMapping("/picture")
 	public ResponseEntity<PictureResponse> uploadProfilePicture(@RequestParam("picture") MultipartFile picture, HttpSession session) {
-		logger.debug("ProfileController :: uploadProfilePicture :: start");
-		
+	 	
 		ResponseEntity<PictureResponse> response = null;
 		PictureResponse pictureResponse = null;
 		UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute("userLoginDetail");
@@ -100,9 +99,7 @@ public class ProfileController {
 		
 		HttpStatus status = pictureResponse != null ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR;
 		response = new ResponseEntity<>(pictureResponse, status);
-		
-		logger.debug("ProfileController :: uploadProfilePicture :: end");
-		return response;
+	 	return response;
 	}
 	
 	@GetMapping("/picture")

@@ -36,7 +36,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
         id.new_generator_mappings: false
-        format_sql: true
+        format_sql: false
         
   session:
     store-type: redis
@@ -53,11 +53,15 @@ spring:
       host: localhost
       port: 27017  
       database: Note_Shelf_Mongo_DB    
-        
+
 logging:
   level:
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE 
+    org.springframework: INFO
+    
+# hibernate logging disabled temporarily        
+   # org.hibernate.SQL: DEBUG
+   # org.hibernate.type.descriptor.sql.BasicBinder: TRACE 
+    
   
 
   

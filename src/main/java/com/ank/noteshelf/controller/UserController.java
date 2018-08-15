@@ -38,14 +38,10 @@ public class UserController {
 	@PostMapping("/registration")
 	@ResponseBody
 	public ResponseEntity<UserResponse> registerUser(@RequestBody @Valid UserSignUpDetail userSignUpDetail) {
-		logger.debug("UserController :: userRegistration :: start ");
-
+	 	
 		UserResponse userResponse = null;
-
 		userResponse = userService.registerUser(userSignUpDetail);
-
-		logger.debug("UserController :: userRegistration :: end ");
-		return new ResponseEntity<UserResponse>(userResponse, HttpStatus.OK);
+ 		return new ResponseEntity<UserResponse>(userResponse, HttpStatus.OK);
 	}
 
 	@GetMapping("/login")
@@ -55,23 +51,18 @@ public class UserController {
 
 	@PostMapping("/login")
 	@ResponseBody
-	public ResponseEntity<String> loginUser(HttpSession session) {
-		
+	public ResponseEntity<String> loginUser(HttpSession session) { 
 		UserLoginDetail userLoginDetail = (UserLoginDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		session.setAttribute("userLoginDetail", userLoginDetail);
-		   
 		ResponseEntity<String> responseEntity = new ResponseEntity<String>("Login Successful! Welcome "+ userLoginDetail.getUsername(), HttpStatus.OK);
-	 
 		return responseEntity;
 	}
 
 	@GetMapping("/logout")
 	@ResponseBody
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void logoutUser(HttpSession session) {
-		logger.debug("UserController:: logoutUser :: Start");
+	public void logoutUser(HttpSession session) { 
 		logger.info("invalidating the session: ");
-		session.invalidate();
-		logger.debug("UserController:: logoutUser :: End"); 
+		session.invalidate(); 
 	}
 }
