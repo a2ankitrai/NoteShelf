@@ -18,52 +18,54 @@ import com.ank.noteshelf.service.impl.NsUserDetailServiceImpl;
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
 
-		http.csrf().disable();
+	http.csrf().disable();
 
-		http
+	http
 
-				.authorizeRequests()
+		.authorizeRequests()
 
-				.antMatchers("/user/registration").permitAll()
+		.antMatchers("/config").hasRole("ADMIN")
 
-				.anyRequest().authenticated()
-				
-				.and()
-				
-				.requestCache().requestCache(new NullRequestCache())
+		.antMatchers("/user/registration").permitAll()
 
-				.and()
-				
-				.httpBasic(); 
+		.anyRequest().authenticated()
 
-	}
+		.and()
 
-	@Autowired
-	NsUserDetailServiceImpl nsUserDetailService;
+		.requestCache().requestCache(new NullRequestCache())
 
-	@Autowired
-	PasswordEncoder passwordEncoder;
+		.and()
 
-	@Autowired
-	public void configure(AuthenticationManagerBuilder auth) throws Exception {
+		.httpBasic();
 
-		auth.userDetailsService(nsUserDetailService).passwordEncoder(passwordEncoder);
+    }
 
-	}
-	
-	/**
-	 * Create the Security configuration authenticating with HTTP-Basic and setting
-	 * the auth-token-header with spring's `HeaderHttpSessionIdResolver`
-	 * 
-	 * Once the login is validated 
-	 * `X-Auth-Token header` with the session value needs to be passed in subsequent requests.
-	 */
-	@Bean
-	public HttpSessionIdResolver httpSessionIdResolver() {
-		return HeaderHttpSessionIdResolver.xAuthToken();
-	}
+    @Autowired
+    NsUserDetailServiceImpl nsUserDetailService;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+
+	auth.userDetailsService(nsUserDetailService).passwordEncoder(passwordEncoder);
+
+    }
+
+    /**
+     * Create the Security configuration authenticating with HTTP-Basic and setting
+     * the auth-token-header with spring's `HeaderHttpSessionIdResolver`
+     * 
+     * Once the login is validated `X-Auth-Token header` with the session value
+     * needs to be passed in subsequent requests.
+     */
+    @Bean
+    public HttpSessionIdResolver httpSessionIdResolver() {
+	return HeaderHttpSessionIdResolver.xAuthToken();
+    }
 
 }

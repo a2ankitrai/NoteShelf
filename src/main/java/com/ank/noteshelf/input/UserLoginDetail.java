@@ -14,85 +14,82 @@ import com.ank.noteshelf.resource.AccountFlag;
 import lombok.Data;
 
 @Data
-public class UserLoginDetail implements UserDetails{
+public class UserLoginDetail implements UserDetails {
 
-	private static final long serialVersionUID = 1L;
-	private byte[] userId;
-	private String userName;
-	private String password;
-	private List<String> roles;
-	private AccountFlag accountFlag;
-	  
-	public UserLoginDetail(NsUser user, String password, List<String> roles, AccountFlag accountFlag) {
-		this.userId = user.getUserId();
-		this.userName = user.getUserName();
-		this.password = password;
-		this.roles = roles;
-		this.accountFlag = accountFlag;
-	}
-	
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		
-		return getRoles()
-                .stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
-                .collect(Collectors.toList());
-	}
+    private static final long serialVersionUID = 1L;
+    private byte[] userId;
+    private String userName;
+    private String password;
+    private List<String> roles;
+    private AccountFlag accountFlag;
 
-	@Override
-	public String getPassword() {
-		return this.password;
-	}
-	  
-	@Override
-	public String getUsername() {
-		
-		return this.userName;
-	}
+    public UserLoginDetail(NsUser user, String password, List<String> roles, AccountFlag accountFlag) {
+	this.userId = user.getUserId();
+	this.userName = user.getUserName();
+	this.password = password;
+	this.roles = roles;
+	this.accountFlag = accountFlag;
+    }
 
-	@Override
-	public boolean isAccountNonExpired() {
-		
-		return accountFlag.isAccountNonExpired();
-	}
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
 
-	@Override
-	public boolean isAccountNonLocked() {
-		
-		return accountFlag.isAccountNonLocked();
-	}
+	return getRoles().stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role)).collect(Collectors.toList());
+    }
 
-	@Override
-	public boolean isCredentialsNonExpired() {
-		
-		return accountFlag.isCredentialsNonExpired();
-	}
+    @Override
+    public String getPassword() {
+	return this.password;
+    }
 
-	@Override
-	public boolean isEnabled() {
-		
-		return accountFlag.isEnabled();
-	}
+    @Override
+    public String getUsername() {
 
-	public String getUserName() {
-		return userName;
-	}
+	return this.userName;
+    }
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+    @Override
+    public boolean isAccountNonExpired() {
 
-	public List<String> getRoles() {
-		return roles;
-	}
+	return accountFlag.isAccountNonExpired();
+    }
 
-	public void setRoles(List<String> roles) {
-		this.roles = roles;
-	}
+    @Override
+    public boolean isAccountNonLocked() {
 
-	public void setPassword(String password) {
-		this.password = password;
-	} 
+	return accountFlag.isAccountNonLocked();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+
+	return accountFlag.isCredentialsNonExpired();
+    }
+
+    @Override
+    public boolean isEnabled() {
+
+	return accountFlag.isEnabled();
+    }
+
+    public String getUserName() {
+	return userName;
+    }
+
+    public void setUserName(String userName) {
+	this.userName = userName;
+    }
+
+    public List<String> getRoles() {
+	return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+	this.roles = roles;
+    }
+
+    public void setPassword(String password) {
+	this.password = password;
+    }
 
 }

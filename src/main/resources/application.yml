@@ -21,8 +21,12 @@ management:
     
 # spring datasource properties
 spring:
+  cache:
+    type: redis
   datasource:
-    url: jdbc:mysql://localhost:3306/Note_shelf_DB?useSSL=false
+    url: jdbc:mysql://localhost:3306/Note_shelf_DB?allowPublicKeyRetrieval=true&useSSL=false
+    
+    
     username: admin
     password: admin
     tomcat:

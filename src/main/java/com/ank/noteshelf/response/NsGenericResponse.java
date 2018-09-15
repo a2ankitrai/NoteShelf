@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class NsGenericResponse {
 
-	private String message;
-	private Date timeStamp;
-	
+    private String message;
+    private Date timeStamp;
+
 }

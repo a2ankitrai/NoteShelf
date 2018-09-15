@@ -10,6 +10,6 @@ import com.ank.noteshelf.model.NsUserProfile;
 @Repository
 public interface ProfileRepository extends JpaRepository<NsUserProfile, String> {
 
-	Optional<NsUserProfile> findByUserId(byte[] userId);
-	
+    Optional<NsUserProfile> findByUserId(byte[] userId);
+
 }

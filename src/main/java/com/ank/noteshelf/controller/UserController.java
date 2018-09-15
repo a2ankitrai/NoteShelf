@@ -30,39 +30,41 @@ import com.ank.noteshelf.service.UserService;
 @RestController
 public class UserController {
 
-	@Autowired
-	UserService userService;
+    @Autowired
+    UserService userService;
 
-	public static final Logger logger = LoggerFactory.getLogger(UserController.class);
+    public static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-	@PostMapping("/registration")
-	@ResponseBody
-	public ResponseEntity<UserResponse> registerUser(@RequestBody @Valid UserSignUpDetail userSignUpDetail) {
-	 	
-		UserResponse userResponse = null;
-		userResponse = userService.registerUser(userSignUpDetail);
- 		return new ResponseEntity<UserResponse>(userResponse, HttpStatus.OK);
-	}
+    @PostMapping("/registration")
+    @ResponseBody
+    public ResponseEntity<UserResponse> registerUser(@RequestBody @Valid UserSignUpDetail userSignUpDetail) {
 
-	@GetMapping("/login")
-	public String getLogin() {
-		return "Login Page!";
-	}
+	UserResponse userResponse = null;
+	userResponse = userService.registerUser(userSignUpDetail);
+	return new ResponseEntity<UserResponse>(userResponse, HttpStatus.OK);
+    }
 
-	@PostMapping("/login")
-	@ResponseBody
-	public ResponseEntity<String> loginUser(HttpSession session) { 
-		UserLoginDetail userLoginDetail = (UserLoginDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		session.setAttribute("userLoginDetail", userLoginDetail);
-		ResponseEntity<String> responseEntity = new ResponseEntity<String>("Login Successful! Welcome "+ userLoginDetail.getUsername(), HttpStatus.OK);
-		return responseEntity;
-	}
+    @GetMapping("/login")
+    public String getLogin() {
+	return "Login Page!";
+    }
 
-	@GetMapping("/logout")
-	@ResponseBody
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void logoutUser(HttpSession session) { 
-		logger.info("invalidating the session: ");
-		session.invalidate(); 
-	}
+    @PostMapping("/login")
+    @ResponseBody
+    public ResponseEntity<String> loginUser(HttpSession session) {
+	UserLoginDetail userLoginDetail = (UserLoginDetail) SecurityContextHolder.getContext().getAuthentication()
+		.getPrincipal();
+	session.setAttribute("userLoginDetail", userLoginDetail);
+	ResponseEntity<String> responseEntity = new ResponseEntity<String>(
+		"Login Successful! Welcome " + userLoginDetail.getUsername(), HttpStatus.OK);
+	return responseEntity;
+    }
+
+    @GetMapping("/logout")
+    @ResponseBody
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void logoutUser(HttpSession session) {
+	logger.info("invalidating the session: ");
+	session.invalidate();
+    }
 }

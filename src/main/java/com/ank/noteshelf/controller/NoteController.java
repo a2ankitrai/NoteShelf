@@ -1,7 +1,6 @@
 package com.ank.noteshelf.controller;
 
 import java.util.List;
-import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -30,104 +29,101 @@ import com.ank.noteshelf.util.UuidUtils;
 @RestController
 public class NoteController {
 
+    public static final Logger logger = LoggerFactory.getLogger(NoteController.class);
+
+    @Autowired
+    NoteService noteService;
+
+    /**
+     * <code>createNote</code> - Create a new note from the input after validation
+     * 
+     * @return ResponseEntity<NoteVO>
+     */
+    @PostMapping
+    public ResponseEntity<NoteResponse> createNote(@RequestBody @Valid NoteInput noteInput, HttpSession session) {
+	UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute("userLoginDetail");
+	NoteResponse noteResponse = noteService.createNote(noteInput, userLoginDetail.getUserId());
+	return new ResponseEntity<NoteResponse>(noteResponse, HttpStatus.OK);
+    }
+
+    /**
+     * <code>getAllNotes</code> - Get all the notes associated with User
+     * 
+     * @return ResponseEntity<List<NoteVO>>
+     */
+    @GetMapping("/all")
+    public ResponseEntity<List<NoteResponse>> getAllNotes(HttpSession session) {
+	UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute("userLoginDetail");
+	List<NoteResponse> noteResponseList = noteService.getAllNotesByUser(userLoginDetail.getUserId());
+	return new ResponseEntity<List<NoteResponse>>(noteResponseList, HttpStatus.OK);
+    }
+
+    /**
+     * Validating path variable
+     * 
+     * https://stackoverflow.com/questions/19419234/how-to-validate-spring-mvc-pathvariable-values
+     * 
+     */
+
+    /**
+     * <code>getNoteById</code> - Get specific note from the provided id
+     * 
+     * @return ResponseEntity<NoteVO>
+     */
+    @GetMapping("/{id}")
+    public ResponseEntity<NoteResponse> getNoteById(@PathVariable(value = "id") String noteId, HttpSession session) {
+
+	NoteResponse noteResponse = null;
+	ResponseEntity<NoteResponse> response = null;
+
+	UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute("userLoginDetail");
+	noteResponse = noteService.getNoteById(UuidUtils.asBytesFromString(noteId), userLoginDetail.getUserId());
+
+	HttpStatus status = noteResponse != null ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+	response = new ResponseEntity<>(noteResponse, status);
+	return response;
+    }
+
+    /**
+     * <code>updateNoteById</code> - Update specific note from the provided id
+     * 
+     * @return ResponseEntity<NoteVO>
+     */
+    @PutMapping({ "/{id}" })
+    public ResponseEntity<NoteResponse> updateNoteById(@PathVariable(value = "id") String noteId,
+	    @RequestBody @Valid NoteInput noteInput, HttpSession session) {
+
+	ResponseEntity<NoteResponse> response = null;
+	UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute("userLoginDetail");
+	NoteResponse noteResponse = noteService.updateNote(noteInput, UuidUtils.asBytesFromString(noteId),
+		userLoginDetail.getUserId());
+	response = new ResponseEntity<NoteResponse>(noteResponse, HttpStatus.OK);
+	return response;
+    }
+
+    /**
+     * <code>deleteNoteById</code> - Delete specific note from the provided id
+     * 
+     * @return ResponseEntity<Boolean>
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Boolean> deleteNoteById(@PathVariable(value = "id") String noteId, HttpSession session) {
+
 	/**
-	 * To support following api's
-	 * 
-	 * POST /note (create new note)
-	 * 
-	 * PUT /note (update existing note)
-	 * 
-	 * Delete /note (delete existing note)
+	 * If the delete target doesn't exist, return 404(Not Found). In some special
+	 * case, the server take the delete request, but will delete the resource in
+	 * async way, which means return client a 202(Accept) before the resource really
+	 * get deleted.
 	 */
 
-	public static final Logger logger = LoggerFactory.getLogger(NoteController.class);
+	Boolean isDeleted = null;
+	ResponseEntity<Boolean> response = null;
 
-	@Autowired
-	NoteService noteService;
+	UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute("userLoginDetail");
+	isDeleted = noteService.deleteNoteById(UuidUtils.asBytesFromString(noteId), userLoginDetail.getUserId());
 
-	/**
-	 * <code>createNote</code> - Create a new note from the input after validation
-	 * @return ResponseEntity<NoteVO>
-	 * */
-	@PostMapping
-	public ResponseEntity<NoteResponse> createNote(@RequestBody @Valid NoteInput noteInput, HttpSession session) {
-		UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute("userLoginDetail");
-		NoteResponse noteResponse = noteService.createNote(noteInput, userLoginDetail.getUserId());
-		return new ResponseEntity<NoteResponse>(noteResponse, HttpStatus.OK);
-	}
-
-	/**
-	 * <code>getAllNotes</code> - Get all the notes associated with User
-	 * @return ResponseEntity<List<NoteVO>>
-	 * */
-	@GetMapping("/all")
-	public ResponseEntity<List<NoteResponse>> getAllNotes(HttpSession session) {
-		UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute("userLoginDetail");
-		List<NoteResponse> noteResponseList = noteService.getAllNotesByUser(userLoginDetail.getUserId());
-		return new ResponseEntity<List<NoteResponse>>(noteResponseList, HttpStatus.OK);
-	}
-
-	/**
-	 * Validating path variable
-	 * 
-	 * https://stackoverflow.com/questions/19419234/how-to-validate-spring-mvc-pathvariable-values
-	 * 
-	 */
-	
-	/**
-	 * <code>getNoteById</code> - Get specific note from the provided id
-	 * @return ResponseEntity<NoteVO>
-	 * */
-	@GetMapping("/{id}")
-	public ResponseEntity<NoteResponse> getNoteById(@PathVariable(value = "id") String noteId, HttpSession session) {
-
-		NoteResponse noteResponse = null;
-		ResponseEntity<NoteResponse> response = null;
-
-		UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute("userLoginDetail");
-		noteResponse = noteService.getNoteById(UuidUtils.asBytesFromString(noteId), userLoginDetail.getUserId());
-
-		HttpStatus status = noteResponse != null ? HttpStatus.OK : HttpStatus.NOT_FOUND;
-		response = new ResponseEntity<>(noteResponse, status);
-		return response;
-	}
-	
-	/**
-	 * <code>updateNoteById</code> - Update specific note from the provided id
-	 * @return ResponseEntity<NoteVO>
-	 * */
-	@PutMapping({"/{id}"})
-	public ResponseEntity<NoteResponse> updateNoteById(@PathVariable(value = "id") String noteId, @RequestBody @Valid NoteInput noteInput, HttpSession session) {
-		
-		ResponseEntity<NoteResponse> response = null;
-		UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute("userLoginDetail");
-		NoteResponse noteResponse = noteService.updateNote(noteInput, UuidUtils.asBytesFromString(noteId), userLoginDetail.getUserId());
-		response = new ResponseEntity<NoteResponse>(noteResponse, HttpStatus.OK);
-		return response;
-	}
-	
-	/**
-	 * <code>deleteNoteById</code> - Delete specific note from the provided id
-	 * @return ResponseEntity<Boolean>
-	 * */
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Boolean> deleteNoteById(@PathVariable(value = "id") String noteId, HttpSession session) {
-
-		/**
-		 * If the delete target doesn't exist, return 404(Not Found). 
-		 * In some special case, the server take the delete request, 
-		 * but will delete the resource in async way, 
-		 * which means return client a 202(Accept) before the resource really get deleted.
-		 * */
-		
-		Boolean isDeleted = null;
-		ResponseEntity<Boolean> response = null;
-
-		UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute("userLoginDetail");
-		isDeleted = noteService.deleteNoteById(UuidUtils.asBytesFromString(noteId), userLoginDetail.getUserId());
-
-		HttpStatus status = isDeleted ? HttpStatus.OK : HttpStatus.NOT_FOUND;
-		response = new ResponseEntity<>(isDeleted, status);
-		return response;
-	}
+	HttpStatus status = isDeleted ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+	response = new ResponseEntity<>(isDeleted, status);
+	return response;
+    }
 }

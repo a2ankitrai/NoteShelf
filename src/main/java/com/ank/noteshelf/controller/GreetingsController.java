@@ -11,17 +11,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class GreetingsController {
 
-	public static final Logger logger = LoggerFactory.getLogger(GreetingsController.class);
-	private static final String template = "Hello, User no. %s : %s!";
+    public static final Logger logger = LoggerFactory.getLogger(GreetingsController.class);
+    private static final String template = "Hello, User no. %s : %s!";
     private final AtomicLong counter = new AtomicLong();
 
     @GetMapping("/")
-    public String sayHello(@RequestParam(name="name", required=false, defaultValue="Stranger") String name) {
-    		
-    	logger.info("User entered : " + name);
-        return  String.format(template,counter.incrementAndGet(), name);
+    public String sayHello(@RequestParam(name = "name", required = false, defaultValue = "Stranger") String name) {
+
+	logger.info("User entered : " + name);
+	return String.format(template, counter.incrementAndGet(), name);
     }
-    
-    
-	
+
 }

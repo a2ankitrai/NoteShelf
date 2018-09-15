@@ -5,6 +5,6 @@ import com.ank.noteshelf.response.UserResponse;
 
 public interface UserService {
 
-	UserResponse registerUser(UserSignUpDetail userSignUpDetail);
-	
+    UserResponse registerUser(UserSignUpDetail userSignUpDetail);
+
 }

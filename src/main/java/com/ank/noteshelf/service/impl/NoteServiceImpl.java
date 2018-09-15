@@ -27,144 +27,139 @@ import com.ank.noteshelf.util.UuidUtils;
 @Service
 public class NoteServiceImpl implements NoteService {
 
-	public static final Logger logger = LoggerFactory.getLogger(NoteServiceImpl.class);
+    public static final Logger logger = LoggerFactory.getLogger(NoteServiceImpl.class);
 
-	@Autowired
-	NoteDataRepository noteDataRepository;
+    @Autowired
+    NoteDataRepository noteDataRepository;
 
-	@Autowired
-	NoteMetaDataRepository noteMetaDataRepository;
-	
-	NotesDataToNoteVOMapper noteDataMapper = Mappers.getMapper(NotesDataToNoteVOMapper.class);
+    @Autowired
+    NoteMetaDataRepository noteMetaDataRepository;
 
-	// TODO
-	// add debug logger statements.
-	
-	@Transactional
-	public NoteResponse createNote(NoteInput noteInput, byte[] userId) {
+    NotesDataToNoteVOMapper noteDataMapper = Mappers.getMapper(NotesDataToNoteVOMapper.class);
 
-		NsNotesData noteData = new NsNotesData();
+    @Transactional
+    public NoteResponse createNote(NoteInput noteInput, byte[] userId) {
 
-		noteData.setNoteTitle(noteInput.getNoteTitle());
-		noteData.setNoteContent(noteInput.getNoteContent());
+	NsNotesData noteData = new NsNotesData();
 
-		noteData = noteDataRepository.save(noteData);
+	noteData.setNoteTitle(noteInput.getNoteTitle());
+	noteData.setNoteContent(noteInput.getNoteContent());
 
-		NsNotesMetaData noteMetaData = new NsNotesMetaData();
+	noteData = noteDataRepository.save(noteData);
 
-		noteMetaData.setNoteId(UuidUtils.generateUuidBytes()); 
-		noteMetaData.setUserId(userId);
-		noteMetaData.setNoteNosqlId(noteData.getId());
+	NsNotesMetaData noteMetaData = new NsNotesMetaData();
 
-		Date now = new Date();
-		noteMetaData.setCreatedDate(now);
-		noteMetaData.setUpdatedDate(now);
+	noteMetaData.setNoteId(UuidUtils.generateUuidBytes());
+	noteMetaData.setUserId(userId);
+	noteMetaData.setNoteNosqlId(noteData.getId());
 
-		noteMetaData = noteMetaDataRepository.save(noteMetaData);
- 
-		NoteResponse noteVo = noteDataMapper.mapNotesToNoteVO(noteData, noteMetaData);
-  
-		return noteVo; 
-	}
-	
-	@Override
-	@Transactional
-	public NoteResponse updateNote(NoteInput noteInput, byte[] noteId,  byte[] userId) {
-		
-		NoteResponse noteVo = null;
-		NsNotesData noteData = null;
-		NsNotesMetaData noteMetaData = null;
-		Optional<NsNotesMetaData> noteMetaDataOptional = Optional.ofNullable(noteMetaDataRepository.findByNoteIdAndUserId(noteId, userId));
-		
-		if(noteMetaDataOptional.isPresent()) {
-			noteMetaData = noteMetaDataOptional.get();
-			Optional<NsNotesData> noteDataOptional =  noteDataRepository.findById(noteMetaData.getNoteNosqlId()); 
-			noteData = noteDataOptional.isPresent() ? noteDataOptional.get() : null;
-		}
-		
-		if(noteData != null) {
-				noteData.setNoteTitle(noteInput.getNoteTitle());
-				noteData.setNoteContent(noteInput.getNoteContent());
-				noteData = noteDataRepository.save(noteData);
-				
-				Date now = new Date();
-				noteMetaData.setUpdatedDate(now);
-				noteVo = noteDataMapper.mapNotesToNoteVO(noteData, noteMetaData);			
-		}
-		else {
-			throw new EmptyResultDataAccessException(NsMessageConstant.NO_NOTE_FOUND_BY_ID,1);
-		}
-		
-		return noteVo;
+	Date now = new Date();
+	noteMetaData.setCreatedDate(now);
+	noteMetaData.setUpdatedDate(now);
+
+	noteMetaData = noteMetaDataRepository.save(noteMetaData);
+
+	NoteResponse noteVo = noteDataMapper.mapNotesToNoteVO(noteData, noteMetaData);
+
+	return noteVo;
+    }
+
+    @Override
+    @Transactional
+    public NoteResponse updateNote(NoteInput noteInput, byte[] noteId, byte[] userId) {
+
+	NoteResponse noteVo = null;
+	NsNotesData noteData = null;
+	NsNotesMetaData noteMetaData = null;
+	Optional<NsNotesMetaData> noteMetaDataOptional = Optional
+		.ofNullable(noteMetaDataRepository.findByNoteIdAndUserId(noteId, userId));
+
+	if (noteMetaDataOptional.isPresent()) {
+	    noteMetaData = noteMetaDataOptional.get();
+	    Optional<NsNotesData> noteDataOptional = noteDataRepository.findById(noteMetaData.getNoteNosqlId());
+	    noteData = noteDataOptional.isPresent() ? noteDataOptional.get() : null;
 	}
 
-	@Override
-	public NoteResponse getNoteById(byte[] noteId, byte[] userId) {
+	if (noteData != null) {
+	    noteData.setNoteTitle(noteInput.getNoteTitle());
+	    noteData.setNoteContent(noteInput.getNoteContent());
+	    noteData = noteDataRepository.save(noteData);
 
-		Optional<NsNotesMetaData> noteMetaData = Optional.ofNullable(noteMetaDataRepository.findByNoteIdAndUserId(noteId, userId)); 
-		Optional<NsNotesData> noteData = noteMetaData.isPresent() ? 
-											noteDataRepository.findById(noteMetaData.get().getNoteNosqlId()) 
-											: Optional.ofNullable(null); 
-		NoteResponse noteVO = null;
-		
-		if(noteData.isPresent()) {
-			noteVO = noteDataMapper.mapNotesToNoteVO(noteData.get(), noteMetaData.get());
-			return noteVO;
-		}
-		else {
-			throw new EmptyResultDataAccessException(NsMessageConstant.NO_NOTE_FOUND_BY_ID,1);
-		}
+	    Date now = new Date();
+	    noteMetaData.setUpdatedDate(now);
+	    noteVo = noteDataMapper.mapNotesToNoteVO(noteData, noteMetaData);
+	} else {
+	    throw new EmptyResultDataAccessException(NsMessageConstant.NO_NOTE_FOUND_BY_ID, 1);
 	}
 
-	@Override
-	public List<NoteResponse> getAllNotesByUser(byte[] userId) {
+	return noteVo;
+    }
 
-		List<NsNotesMetaData> notesMetaDataList = noteMetaDataRepository.findByUserId(userId);
-  
-//		List<NsNotesData> notesDataList = notesMetaDataList.stream()
-//												.map(noteMetaData -> noteMetaData.getNoteNosqlId())
-//												.map(noSqlId -> noteDataRepository.findById(noSqlId))
-//												.filter(note -> note.isPresent())
-//												.map(note -> note.get())
-//												.collect(Collectors.toList());
-//		
-//		List<NoteVO> noteVOList = notesDataList.stream()
-//								  .map(noteData -> convertNotesDataToNoteVO(noteData))
-//								  .collect(Collectors.toList());
-		
-		List<NoteResponse> noteVOList = notesMetaDataList.stream()
-										.map(noteMetaData -> makeNoteVOFromNotesMetaData(noteMetaData))
-										.collect(Collectors.toList());
+    @Override
+    public NoteResponse getNoteById(byte[] noteId, byte[] userId) {
 
-		return noteVOList;
+	Optional<NsNotesMetaData> noteMetaData = Optional
+		.ofNullable(noteMetaDataRepository.findByNoteIdAndUserId(noteId, userId));
+	Optional<NsNotesData> noteData = noteMetaData.isPresent()
+		? noteDataRepository.findById(noteMetaData.get().getNoteNosqlId())
+		: Optional.ofNullable(null);
+	NoteResponse noteVO = null;
+
+	if (noteData.isPresent()) {
+	    noteVO = noteDataMapper.mapNotesToNoteVO(noteData.get(), noteMetaData.get());
+	    return noteVO;
+	} else {
+	    throw new EmptyResultDataAccessException(NsMessageConstant.NO_NOTE_FOUND_BY_ID, 1);
 	}
-	
-	@Transactional
-	public Boolean deleteNoteById(byte[] noteId, byte[] userId) {
-		Boolean isDeleted = false;
-		Optional<Integer> val = Optional.ofNullable(noteMetaDataRepository.deleteByNoteIdAndUserId(noteId, userId)); 
-		if(val.isPresent()) {
-			isDeleted = true;
-		}
-		else {
-			throw new EmptyResultDataAccessException(NsMessageConstant.NO_NOTE_FOUND_BY_ID,1);
-		}
-		
-		return isDeleted;
+    }
+
+    @Override
+    public List<NoteResponse> getAllNotesByUser(byte[] userId) {
+
+	List<NsNotesMetaData> notesMetaDataList = noteMetaDataRepository.findByUserId(userId);
+
+	// List<NsNotesData> notesDataList = notesMetaDataList.stream()
+	// .map(noteMetaData -> noteMetaData.getNoteNosqlId())
+	// .map(noSqlId -> noteDataRepository.findById(noSqlId))
+	// .filter(note -> note.isPresent())
+	// .map(note -> note.get())
+	// .collect(Collectors.toList());
+	//
+	// List<NoteVO> noteVOList = notesDataList.stream()
+	// .map(noteData -> convertNotesDataToNoteVO(noteData))
+	// .collect(Collectors.toList());
+
+	List<NoteResponse> noteVOList = notesMetaDataList.stream()
+		.map(noteMetaData -> makeNoteVOFromNotesMetaData(noteMetaData)).collect(Collectors.toList());
+
+	return noteVOList;
+    }
+
+    @Transactional
+    public Boolean deleteNoteById(byte[] noteId, byte[] userId) {
+	Boolean isDeleted = false;
+	Optional<Integer> val = Optional.ofNullable(noteMetaDataRepository.deleteByNoteIdAndUserId(noteId, userId));
+	if (val.isPresent()) {
+	    isDeleted = true;
+	} else {
+	    throw new EmptyResultDataAccessException(NsMessageConstant.NO_NOTE_FOUND_BY_ID, 1);
 	}
-	
-	private NoteResponse makeNoteVOFromNotesMetaData(NsNotesMetaData noteMetaData) {
-		
-		Optional<NsNotesData> noteDataOptional = noteDataRepository.findById(noteMetaData.getNoteNosqlId());
-		NsNotesData noteData = null;
-		
-		if(noteDataOptional.isPresent()) {
-			noteData = noteDataOptional.get();
-		}
-		 
-		NoteResponse noteVO = noteDataMapper.mapNotesToNoteVO(noteData, noteMetaData);
-		
-		return noteVO;
-	} 
-			
+
+	return isDeleted;
+    }
+
+    private NoteResponse makeNoteVOFromNotesMetaData(NsNotesMetaData noteMetaData) {
+
+	Optional<NsNotesData> noteDataOptional = noteDataRepository.findById(noteMetaData.getNoteNosqlId());
+	NsNotesData noteData = null;
+
+	if (noteDataOptional.isPresent()) {
+	    noteData = noteDataOptional.get();
+	}
+
+	NoteResponse noteVO = noteDataMapper.mapNotesToNoteVO(noteData, noteMetaData);
+
+	return noteVO;
+    }
+
 }

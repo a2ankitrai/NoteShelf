@@ -16,11 +16,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class NoteInput {
 
-	@JsonProperty("note_title")
-	private String noteTitle;
-	
-	@NotNull
-    @NotEmpty(message="Note's content cannot be empty")
-	@JsonProperty("note_content")
-	private String noteContent;
+    @JsonProperty("note_title")
+    private String noteTitle;
+
+    @NotNull
+    @NotEmpty(message = "Note's content cannot be empty")
+    @JsonProperty("note_content")
+    private String noteContent;
 }

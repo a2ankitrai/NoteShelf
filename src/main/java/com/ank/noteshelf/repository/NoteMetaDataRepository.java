@@ -8,12 +8,12 @@ import org.springframework.stereotype.Repository;
 import com.ank.noteshelf.model.NsNotesMetaData;
 
 @Repository
-public interface NoteMetaDataRepository extends JpaRepository<NsNotesMetaData, String>{
-	
-	List<NsNotesMetaData> findByUserId(byte[] userId);
-	
-	NsNotesMetaData findByNoteIdAndUserId(byte[] noteId, byte[] userId);
-	
-	Integer deleteByNoteIdAndUserId(byte[] noteId, byte[] userId);
+public interface NoteMetaDataRepository extends JpaRepository<NsNotesMetaData, byte[]> {
+
+    List<NsNotesMetaData> findByUserId(byte[] userId);
+
+    NsNotesMetaData findByNoteIdAndUserId(byte[] noteId, byte[] userId);
+
+    Integer deleteByNoteIdAndUserId(byte[] noteId, byte[] userId);
 
 }
