@@ -1,5 +1,7 @@
 package com.ank.noteshelf.controller;
 
+import java.util.Date;
+
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -19,52 +21,63 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ank.noteshelf.input.UserLoginDetail;
 import com.ank.noteshelf.input.UserSignUpDetail;
+import com.ank.noteshelf.response.NsGenericResponse;
 import com.ank.noteshelf.response.UserResponse;
 import com.ank.noteshelf.service.UserService;
 
 /**
- * @RequestMapping : Maps a URL pattern and/or HTTP method to a method or
- *                 controller type.
+ * @RequestMapping : Maps a URL pattern and/or HTTP method to a method or controller type.
  */
+
 @RequestMapping("/user")
 @RestController
 public class UserController {
 
-    @Autowired
-    UserService userService;
+  @Autowired
+  UserService userService;
 
-    public static final Logger logger = LoggerFactory.getLogger(UserController.class);
+  public static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    @PostMapping("/registration")
-    @ResponseBody
-    public ResponseEntity<UserResponse> registerUser(@RequestBody @Valid UserSignUpDetail userSignUpDetail) {
+  @PostMapping("/registration")
+  @ResponseBody
+  public ResponseEntity<UserResponse> registerUser(
+      @RequestBody @Valid UserSignUpDetail userSignUpDetail) {
 
-	UserResponse userResponse = null;
-	userResponse = userService.registerUser(userSignUpDetail);
-	return new ResponseEntity<UserResponse>(userResponse, HttpStatus.OK);
-    }
+    UserResponse userResponse = null;
+    userResponse = userService.registerUser(userSignUpDetail);
+    return new ResponseEntity<UserResponse>(userResponse, HttpStatus.OK);
+  }
 
-    @GetMapping("/login")
-    public String getLogin() {
-	return "Login Page!";
-    }
+  @GetMapping("/login")
+  public String getLogin() {
+    return "Login Page!";
+  }
 
-    @PostMapping("/login")
-    @ResponseBody
-    public ResponseEntity<String> loginUser(HttpSession session) {
-	UserLoginDetail userLoginDetail = (UserLoginDetail) SecurityContextHolder.getContext().getAuthentication()
-		.getPrincipal();
-	session.setAttribute("userLoginDetail", userLoginDetail);
-	ResponseEntity<String> responseEntity = new ResponseEntity<String>(
-		"Login Successful! Welcome " + userLoginDetail.getUsername(), HttpStatus.OK);
-	return responseEntity;
-    }
+  @PostMapping("/login")
+  @ResponseBody
+  public ResponseEntity<NsGenericResponse> loginUser(HttpSession session) {
+    UserLoginDetail userLoginDetail =
+        (UserLoginDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    session.setAttribute("userLoginDetail", userLoginDetail);
 
-    @GetMapping("/logout")
-    @ResponseBody
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void logoutUser(HttpSession session) {
-	logger.info("invalidating the session: ");
-	session.invalidate();
-    }
+    NsGenericResponse response = new NsGenericResponse(
+        "Login Successful! Welcome " + userLoginDetail.getUsername(), new Date());
+
+    ResponseEntity<NsGenericResponse> responseEntity =
+        new ResponseEntity<>(response, HttpStatus.OK);
+
+    return responseEntity;
+  }
+
+  @PostMapping("/logout")
+  @ResponseBody
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public ResponseEntity<NsGenericResponse> logoutUser(HttpSession session) {
+    session.invalidate();
+    NsGenericResponse response = new NsGenericResponse("Logout Successfull", new Date());
+    ResponseEntity<NsGenericResponse> responseEntity =
+        new ResponseEntity<>(response, HttpStatus.OK);
+
+    return responseEntity;
+  }
 }

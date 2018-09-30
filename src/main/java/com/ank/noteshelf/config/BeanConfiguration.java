@@ -11,27 +11,28 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class BeanConfiguration {
 
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	} 
-	
-	@Bean
-    JedisConnectionFactory jedisConnectionFactory() {
-	return new JedisConnectionFactory();
-    }
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
-    @Bean
-    public RedisTemplate<String, Object> redisTemplate() {
-	RedisTemplate<String, Object> template = new RedisTemplate<>();
-	template.setConnectionFactory(jedisConnectionFactory());
-	return template;
-    }
-    
-    @Bean
-    public StringRedisTemplate stringRedisTemplate() {
-	StringRedisTemplate stringRedisTemplate = new StringRedisTemplate();
-	stringRedisTemplate.setConnectionFactory(jedisConnectionFactory());
-	return stringRedisTemplate;
-    }
+  @Bean
+  JedisConnectionFactory jedisConnectionFactory() {
+    return new JedisConnectionFactory();
+  }
+
+  @Bean
+  public RedisTemplate<String, Object> redisTemplate() {
+    RedisTemplate<String, Object> template = new RedisTemplate<>();
+    template.setConnectionFactory(jedisConnectionFactory());
+    return template;
+  }
+
+  @Bean
+  public StringRedisTemplate stringRedisTemplate() {
+    StringRedisTemplate stringRedisTemplate = new StringRedisTemplate();
+    stringRedisTemplate.setConnectionFactory(jedisConnectionFactory());
+    return stringRedisTemplate;
+  }
+
 }

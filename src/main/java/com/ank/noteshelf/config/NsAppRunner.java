@@ -1,9 +1,7 @@
 package com.ank.noteshelf.config;
 
-import static com.ank.noteshelf.resource.NsCommonConstant.GCP_CREDENTIALS;
 import static com.ank.noteshelf.resource.NsCommonConstant.CACHE_APP_CONFIG;
-
-import java.util.Base64;
+import static com.ank.noteshelf.resource.NsCommonConstant.GCP_CREDENTIALS;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,8 +13,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import com.ank.noteshelf.model.NsApplicationConfiguration;
-import com.ank.noteshelf.repository.ApplicationConfigRepository;
 import com.ank.noteshelf.resource.NsMessageConstant;
 import com.ank.noteshelf.response.AppConfigResponse;
 import com.ank.noteshelf.service.impl.AppConfigServiceImpl;

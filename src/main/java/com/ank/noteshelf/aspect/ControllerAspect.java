@@ -41,7 +41,7 @@ public class ControllerAspect {
 		logMessage.append(joinPoint.getTarget().getClass().getName());
 		logMessage.append(COLON);
 		logMessage.append(joinPoint.getSignature().getName() + COLON + END);
-
+		
 		if (logger.isInfoEnabled()) {
 			logger.info(logMessage.toString());
 		} else if (logger.isDebugEnabled()) {

@@ -1,5 +1,7 @@
 package com.ank.noteshelf.config;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +13,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.savedrequest.NullRequestCache;
 import org.springframework.session.web.http.HeaderHttpSessionIdResolver;
 import org.springframework.session.web.http.HttpSessionIdResolver;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.ank.noteshelf.service.impl.NsUserDetailServiceImpl;
 
@@ -18,54 +23,69 @@ import com.ank.noteshelf.service.impl.NsUserDetailServiceImpl;
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
 
-	http.csrf().disable();
+    http.csrf().disable();
 
-	http
+    http
 
-		.authorizeRequests()
+        .cors().and()
 
-		.antMatchers("/config").hasRole("ADMIN")
+        .authorizeRequests()
 
-		.antMatchers("/user/registration").permitAll()
+        .antMatchers("/config").hasRole("ADMIN")
 
-		.anyRequest().authenticated()
+        .antMatchers("/user/registration").permitAll()
 
-		.and()
+        .anyRequest().authenticated()
 
-		.requestCache().requestCache(new NullRequestCache())
+        .and()
 
-		.and()
+        .requestCache().requestCache(new NullRequestCache())
 
-		.httpBasic();
+        .and()
 
-    }
+        .httpBasic();
 
-    @Autowired
-    NsUserDetailServiceImpl nsUserDetailService;
+  }
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
+  @Autowired
+  NsUserDetailServiceImpl nsUserDetailService;
 
-    @Autowired
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+  @Autowired
+  PasswordEncoder passwordEncoder;
 
-	auth.userDetailsService(nsUserDetailService).passwordEncoder(passwordEncoder);
+  @Autowired
+  public void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-    }
+    auth.userDetailsService(nsUserDetailService).passwordEncoder(passwordEncoder);
 
-    /**
-     * Create the Security configuration authenticating with HTTP-Basic and setting
-     * the auth-token-header with spring's `HeaderHttpSessionIdResolver`
-     * 
-     * Once the login is validated `X-Auth-Token header` with the session value
-     * needs to be passed in subsequent requests.
-     */
-    @Bean
-    public HttpSessionIdResolver httpSessionIdResolver() {
-	return HeaderHttpSessionIdResolver.xAuthToken();
-    }
+  }
+
+  @Bean
+  CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration configuration = new CorsConfiguration();
+    
+    configuration.setAllowedOrigins(Arrays.asList("*"));
+    configuration.addAllowedHeader("*");
+    configuration.addAllowedMethod("*");
+    configuration.setExposedHeaders(Arrays.asList("X-Auth-Token"));
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration);
+    return source;
+  }
+
+  /**
+   * Create the Security configuration authenticating with HTTP-Basic and setting the
+   * auth-token-header with spring's `HeaderHttpSessionIdResolver`
+   * 
+   * Once the login is validated `X-Auth-Token header` with the session value needs to be passed in
+   * subsequent requests.
+   */
+  @Bean
+  public HttpSessionIdResolver httpSessionIdResolver() {
+    return HeaderHttpSessionIdResolver.xAuthToken();
+  }
 
 }
