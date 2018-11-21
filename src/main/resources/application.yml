@@ -4,6 +4,7 @@ server:
   servlet:
     session:
       timeout: 3000
+      
         
 
 # spring actuators  
@@ -17,7 +18,7 @@ management:
   endpoints:
     web:
       base-path: /manage  
-        
+
     
 # spring datasource properties
 spring:
@@ -47,6 +48,9 @@ spring:
     redis:
       flush-mode: immediate
       namespace: spring:session
+  # configure below for time out. find whether the same is in seconds or minutes.
+    timeout: 3600
+     
             
   redis:
     host: localhost

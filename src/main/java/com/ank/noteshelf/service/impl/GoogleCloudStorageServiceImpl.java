@@ -40,6 +40,10 @@ public class GoogleCloudStorageServiceImpl implements FileStorageService {
     private boolean bucketInitialized;
 
     private void initializeBucket() {
+
+	if (!bucketInitialized)
+	    return;
+
 	Credentials credentials = null;
 
 	String gcsCredentials = (String) cacheManager.getCache(CACHE_APP_CONFIG).get(GCP_CREDENTIALS).get();
@@ -100,8 +104,9 @@ public class GoogleCloudStorageServiceImpl implements FileStorageService {
     @Override
     public Blob getFile(String fileName) {
 
-	if(fileName == null || fileName.isEmpty()) return null;
-	
+	if (fileName == null || fileName.isEmpty())
+	    return null;
+
 	if (!checkBucketInitiatlization()) {
 	    initializeBucket();
 	}

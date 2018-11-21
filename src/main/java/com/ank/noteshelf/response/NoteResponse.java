@@ -3,6 +3,8 @@ package com.ank.noteshelf.response;
 import java.util.Date;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,15 +15,20 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class NoteResponse {
-	
-	private UUID noteId;
-	
-	private String noteTitle;
-	
-	private String noteContent;
-	
-	private Date createdDate;
-	 
-	private Date updatedDate;
+
+    @JsonProperty("note_id")
+    private UUID noteId;
+
+    @JsonProperty("note_title")
+    private String noteTitle;
+
+    @JsonProperty("note_content")
+    private String noteContent;
+
+    @JsonProperty("created_date")
+    private Date createdDate;
+
+    @JsonProperty("updated_date")
+    private Date updatedDate;
 
 }

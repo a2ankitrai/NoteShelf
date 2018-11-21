@@ -27,7 +27,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
 
     http.csrf().disable();
-
+// create separate branch for oauth 2 implementation
     http
 
         .cors().and()
@@ -36,7 +36,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         .antMatchers("/config").hasRole("ADMIN")
 
-        .antMatchers("/user/registration").permitAll()
+
+        .antMatchers("/user/registration", "/greeting2").permitAll()
 
         .anyRequest().authenticated()
 

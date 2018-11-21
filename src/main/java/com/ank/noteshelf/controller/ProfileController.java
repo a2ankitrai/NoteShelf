@@ -1,5 +1,7 @@
 package com.ank.noteshelf.controller;
 
+import static com.ank.noteshelf.resource.NsCommonConstant.USER_LOGIN_DETAIL;
+
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -43,24 +45,29 @@ public class ProfileController {
     public static final Logger logger = LoggerFactory.getLogger(ProfileController.class);
 
     @GetMapping
-    public ResponseEntity<ProfileResponse> getProfileByUserId(HttpSession session) {
+    public ResponseEntity<ProfileResponse> getUserProfile(HttpSession session) {
 
 	ProfileResponse profileResponse = null;
 	ResponseEntity<ProfileResponse> response = null;
 
-	UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute("userLoginDetail");
+	UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute(USER_LOGIN_DETAIL);
 	profileResponse = profileService.getProfileByUserId(userLoginDetail.getUserId());
 	HttpStatus status = profileResponse != null ? HttpStatus.OK : HttpStatus.NOT_FOUND;
 	response = new ResponseEntity<>(profileResponse, status);
 	return response;
     }
 
+    /**
+     * <code>updateProfileByUserId</code> - Update User Profile from ProfileInput
+     * 
+     * @return ResponseEntity<ProfileResponse>
+     */
     @PutMapping
     public ResponseEntity<ProfileResponse> updateProfileByUserId(@RequestBody @Valid ProfileInput profileInput,
 	    HttpSession session) {
 
 	ResponseEntity<ProfileResponse> response = null;
-	UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute("userLoginDetail");
+	UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute(USER_LOGIN_DETAIL);
 	ProfileResponse profileResponse = profileService.updateProfile(profileInput, userLoginDetail.getUserId());
 
 	HttpStatus status = profileResponse != null ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR;
@@ -86,7 +93,7 @@ public class ProfileController {
 	Boolean isDeleted = null;
 	ResponseEntity<Boolean> response = null;
 
-	UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute("userLoginDetail");
+	UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute(USER_LOGIN_DETAIL);
 	isDeleted = profileService.deleteProfileByUserId(userLoginDetail.getUserId());
 
 	HttpStatus status = isDeleted ? HttpStatus.OK : HttpStatus.NOT_FOUND;
@@ -94,24 +101,10 @@ public class ProfileController {
 	return response;
     }
 
-    @PutMapping("/picture")
-    public ResponseEntity<PictureResponse> updateProfilePicture(@RequestParam("picture") MultipartFile picture,
-	    HttpSession session) {
-
-	ResponseEntity<PictureResponse> response = null;
-	PictureResponse pictureResponse = null;
-	UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute("userLoginDetail");
-	pictureResponse = profileService.updateProfilePicture(picture, userLoginDetail.getUserId());
-
-	HttpStatus status = pictureResponse != null ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR;
-	response = new ResponseEntity<>(pictureResponse, status);
-	return response;
-    }
-
     @GetMapping("/picture")
     public ResponseEntity<Resource> getProfilePicture(HttpSession session) {
 	PictureResponse pictureResponse = null;
-	UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute("userLoginDetail");
+	UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute(USER_LOGIN_DETAIL);
 	pictureResponse = profileService.getProfilePictureByUserId(userLoginDetail.getUserId());
 
 	return ResponseEntity.ok().contentType(MediaType.parseMediaType(pictureResponse.getContentType()))
@@ -119,13 +112,27 @@ public class ProfileController {
 			"attachment; filename=\"" + pictureResponse.getPictureName() + "\"")
 		.body(pictureResponse.getPictureResource());
     }
+    
+    @PutMapping("/picture")
+    public ResponseEntity<PictureResponse> updateProfilePicture(@RequestParam("picture") MultipartFile picture,
+	    HttpSession session) {
 
+	ResponseEntity<PictureResponse> response = null;
+	PictureResponse pictureResponse = null;
+	UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute(USER_LOGIN_DETAIL);
+	pictureResponse = profileService.updateProfilePicture(picture, userLoginDetail.getUserId());
+
+	HttpStatus status = pictureResponse != null ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR;
+	response = new ResponseEntity<>(pictureResponse, status);
+	return response;
+    }
+ 
     @DeleteMapping("/picture")
     public ResponseEntity<NsGenericResponse> deleteProfilePicture(HttpSession session) {
 
 	ResponseEntity<NsGenericResponse> response = null;
 	NsGenericResponse nsGenericResponse = null;
-	UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute("userLoginDetail");
+	UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute(USER_LOGIN_DETAIL);
 	nsGenericResponse = profileService.deleteProfilePicture(userLoginDetail.getUserId());
 
 	HttpStatus status = nsGenericResponse != null ? HttpStatus.OK : HttpStatus.NOT_FOUND;

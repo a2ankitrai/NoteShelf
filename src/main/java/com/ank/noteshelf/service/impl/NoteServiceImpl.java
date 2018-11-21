@@ -5,9 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.mapstruct.factory.Mappers;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -27,15 +24,11 @@ import com.ank.noteshelf.util.UuidUtils;
 @Service
 public class NoteServiceImpl implements NoteService {
 
-    public static final Logger logger = LoggerFactory.getLogger(NoteServiceImpl.class);
-
     @Autowired
     NoteDataRepository noteDataRepository;
 
     @Autowired
     NoteMetaDataRepository noteMetaDataRepository;
-
-    NotesDataToNoteVOMapper noteDataMapper = Mappers.getMapper(NotesDataToNoteVOMapper.class);
 
     @Transactional
     public NoteResponse createNote(NoteInput noteInput, byte[] userId) {
@@ -59,7 +52,7 @@ public class NoteServiceImpl implements NoteService {
 
 	noteMetaData = noteMetaDataRepository.save(noteMetaData);
 
-	NoteResponse noteVo = noteDataMapper.mapNotesToNoteVO(noteData, noteMetaData);
+	NoteResponse noteVo = NotesDataToNoteVOMapper.INSTANCE.mapNotesToNoteVO(noteData, noteMetaData);
 
 	return noteVo;
     }
@@ -87,7 +80,7 @@ public class NoteServiceImpl implements NoteService {
 
 	    Date now = new Date();
 	    noteMetaData.setUpdatedDate(now);
-	    noteVo = noteDataMapper.mapNotesToNoteVO(noteData, noteMetaData);
+	    noteVo = NotesDataToNoteVOMapper.INSTANCE.mapNotesToNoteVO(noteData, noteMetaData);
 	} else {
 	    throw new EmptyResultDataAccessException(NsMessageConstant.NO_NOTE_FOUND_BY_ID, 1);
 	}
@@ -106,7 +99,7 @@ public class NoteServiceImpl implements NoteService {
 	NoteResponse noteVO = null;
 
 	if (noteData.isPresent()) {
-	    noteVO = noteDataMapper.mapNotesToNoteVO(noteData.get(), noteMetaData.get());
+	    noteVO = NotesDataToNoteVOMapper.INSTANCE.mapNotesToNoteVO(noteData.get(), noteMetaData.get());
 	    return noteVO;
 	} else {
 	    throw new EmptyResultDataAccessException(NsMessageConstant.NO_NOTE_FOUND_BY_ID, 1);
@@ -157,7 +150,7 @@ public class NoteServiceImpl implements NoteService {
 	    noteData = noteDataOptional.get();
 	}
 
-	NoteResponse noteVO = noteDataMapper.mapNotesToNoteVO(noteData, noteMetaData);
+	NoteResponse noteVO = NotesDataToNoteVOMapper.INSTANCE.mapNotesToNoteVO(noteData, noteMetaData);
 
 	return noteVO;
     }

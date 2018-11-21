@@ -8,7 +8,6 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import javax.validation.Constraint;
 import javax.validation.Payload;
 
 @Target({ TYPE, ANNOTATION_TYPE })
@@ -17,6 +16,10 @@ import javax.validation.Payload;
 @Documented
 public @interface PasswordMatches {
 
+    /**
+     * refer to RetypePasswordValidator from spring lemon
+     * */	
+    
     String message() default "Passwords don't match";
 
     Class<?>[] groups() default {};

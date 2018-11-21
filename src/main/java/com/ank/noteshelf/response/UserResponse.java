@@ -14,25 +14,24 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserResponse {
 
-	private UUID userId;
-	 
-	private String firstName;
-	
-	private String lastName;
-	
-	private String userName;
+    private UUID userId;
+    
+    // firstName and LastName to be removed...
+    private String firstName;
+    private String lastName;
 
-	private String authType; 
-	
-	private Role role;
-	
-	private UUID userProfileId;
-	
-	private Date createdDate;
-	 
-	private Date updatedDate;
+    private String userName;
 
-	 
-	
-	
+    private String email;
+
+    private String authType;
+
+    private Role role;
+
+    private UUID userProfileId;
+
+    private Date createdDate;
+
+    private Date updatedDate;
+
 }

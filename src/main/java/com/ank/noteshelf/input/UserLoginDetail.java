@@ -13,8 +13,13 @@ import com.ank.noteshelf.resource.AccountFlag;
 
 import lombok.Data;
 
+//Principal implementation.
 @Data
 public class UserLoginDetail implements UserDetails {
+    
+    /**
+     * This class needs to implement OidcUser, CredentialsContainer also other than UserDetails for supporting oauth2 login.
+     * */
 
     private static final long serialVersionUID = 1L;
     private byte[] userId;

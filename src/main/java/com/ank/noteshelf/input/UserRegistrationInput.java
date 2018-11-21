@@ -15,23 +15,13 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserSignUpDetail {
+public class UserRegistrationInput {
 
     @NotNull
     @AlphaNumeric
     @NotEmpty(message = "User Name cannot be empty")
     @JsonProperty("user_name")
     private String userName;
-
-    @NotNull
-    @NotEmpty
-    @AlphaNumeric
-    @JsonProperty("first_name")
-    private String firstName;
-
-    @JsonProperty("last_name")
-    @AlphaNumeric
-    private String lastName;
 
     @NotNull
     @NotEmpty

@@ -14,6 +14,8 @@ public interface ProfileObjectsMapper {
     ProfileObjectsMapper INSTANCE = Mappers.getMapper(ProfileObjectsMapper.class);
 
     @Mapping(source = "profile.userProfileId", target = "profileId", qualifiedByName = "mapByteToUuid")
+    @Mapping(source = "profile.firstName", target = "firstName")
+    @Mapping(source = "profile.lastName", target = "lastName")
     @Mapping(source = "profile.gender", target = "gender")
     @Mapping(source = "profile.work", target = "work")
     @Mapping(source = "profile.contactNumber", target = "contactNumber")
@@ -24,6 +26,8 @@ public interface ProfileObjectsMapper {
     @Mapping(source = "profile.updatedDate", target = "updatedDate")
     ProfileResponse mapUserProfileToProfileVO(NsUserProfile profile);
 
+    @Mapping(source = "profileInput.firstName", target = "firstName")
+    @Mapping(source = "profileInput.lastName", target = "lastName")
     @Mapping(source = "profileInput.gender", target = "gender")
     @Mapping(source = "profileInput.work", target = "work")
     @Mapping(source = "profileInput.contactNumber", target = "contactNumber")

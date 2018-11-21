@@ -1,10 +1,10 @@
 package com.ank.noteshelf.validation;
 
-import com.ank.noteshelf.input.UserSignUpDetail;
+import com.ank.noteshelf.input.UserRegistrationInput;
 
 public class UserValidator {
 
-	public static boolean validateUserSignupDetail(UserSignUpDetail userSignUpDetail) {
+	public static boolean validateUserSignupDetail(UserRegistrationInput userSignUpDetail) {
 		
 		boolean isValid = true;
 		

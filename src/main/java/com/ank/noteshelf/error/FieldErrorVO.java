@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 public class FieldErrorVO {
 
-	private String field;
-	 
+    private String field;
+
     private String message;
-    
+
 }

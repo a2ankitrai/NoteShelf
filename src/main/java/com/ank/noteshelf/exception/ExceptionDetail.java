@@ -3,14 +3,15 @@ package com.ank.noteshelf.exception;
 import lombok.Data;
 
 /**
- * The ExceptionDetail class models information about a web service request which results in an Exception. This
- * information may be returned to the client.
- *   
+ * The ExceptionDetail class models information about a web service request
+ * which results in an Exception. This information may be returned to the
+ * client.
+ * 
  */
 @Data
 public class ExceptionDetail {
 
-	  /**
+    /**
      * A timestamp expressed in milliseconds.
      */
     private long timestamp;
@@ -43,7 +44,7 @@ public class ExceptionDetail {
      * Construct an ExceptionDetail.
      */
     public ExceptionDetail() {
-        this.timestamp = System.currentTimeMillis();
+	this.timestamp = System.currentTimeMillis();
     }
-    
+
 }

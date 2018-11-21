@@ -9,4 +9,5 @@ import com.ank.noteshelf.model.NsUserAuthDetail;
 public interface UserAuthDetailRepository extends JpaRepository<NsUserAuthDetail, String> {
 
     NsUserAuthDetail findByUserId(byte[] userId);
+    // add email verified provision as well later on..
 }

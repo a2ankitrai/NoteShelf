@@ -1,5 +1,6 @@
 package com.ank.noteshelf.model;
-// Generated Aug 15, 2018 3:31:51 AM by Hibernate Tools 5.2.11.Final
+// Generated Nov 11, 2018 10:39:00 PM by Hibernate Tools 5.2.11.Final
+
 
 import java.util.Date;
 import javax.persistence.Column;
@@ -16,143 +17,181 @@ import javax.persistence.TemporalType;
 @Table(name = "NS_USER_PROFILE", catalog = "Note_shelf_DB")
 public class NsUserProfile implements java.io.Serializable {
 
-    private byte[] userProfileId;
-    private byte[] userId;
-    private String gender;
-    private String profileImage;
-    private String work;
-    private String contactNumber;
-    private String birthDate;
-    private String birthYear;
-    private String language;
-    private Date createdDate;
-    private Date updatedDate;
 
-    public NsUserProfile() {
-    }
+  private byte[] userProfileId;
+  private byte[] userId;
+  private String firstName;
+  private String lastName;
+  private String gender;
+  private String profileImage;
+  private String work;
+  private String contactNumber;
+  private String birthDate;
+  private String birthYear;
+  private String language;
+  private Date createdDate;
+  private Date updatedDate;
 
-    public NsUserProfile(byte[] userProfileId, byte[] userId) {
-	this.userProfileId = userProfileId;
-	this.userId = userId;
-    }
+  public NsUserProfile() {}
 
-    public NsUserProfile(byte[] userProfileId, byte[] userId, String gender, String profileImage, String work,
-	    String contactNumber, String birthDate, String birthYear, String language, Date createdDate,
-	    Date updatedDate) {
-	this.userProfileId = userProfileId;
-	this.userId = userId;
-	this.gender = gender;
-	this.profileImage = profileImage;
-	this.work = work;
-	this.contactNumber = contactNumber;
-	this.birthDate = birthDate;
-	this.birthYear = birthYear;
-	this.language = language;
-	this.createdDate = createdDate;
-	this.updatedDate = updatedDate;
-    }
 
-    @Id
+  public NsUserProfile(byte[] userProfileId, byte[] userId) {
+    this.userProfileId = userProfileId;
+    this.userId = userId;
+  }
 
-    @Column(name = "USER_PROFILE_ID", unique = true, nullable = false)
-    public byte[] getUserProfileId() {
-	return this.userProfileId;
-    }
+  public NsUserProfile(byte[] userProfileId, byte[] userId, String firstName, String lastName,
+      String gender, String profileImage, String work, String contactNumber, String birthDate,
+      String birthYear, String language, Date createdDate, Date updatedDate) {
+    this.userProfileId = userProfileId;
+    this.userId = userId;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.gender = gender;
+    this.profileImage = profileImage;
+    this.work = work;
+    this.contactNumber = contactNumber;
+    this.birthDate = birthDate;
+    this.birthYear = birthYear;
+    this.language = language;
+    this.createdDate = createdDate;
+    this.updatedDate = updatedDate;
+  }
 
-    public void setUserProfileId(byte[] userProfileId) {
-	this.userProfileId = userProfileId;
-    }
+  @Id
 
-    @Column(name = "USER_ID", nullable = false)
-    public byte[] getUserId() {
-	return this.userId;
-    }
 
-    public void setUserId(byte[] userId) {
-	this.userId = userId;
-    }
+  @Column(name = "USER_PROFILE_ID", unique = true, nullable = false)
+  public byte[] getUserProfileId() {
+    return this.userProfileId;
+  }
 
-    @Column(name = "GENDER", length = 1)
-    public String getGender() {
-	return this.gender;
-    }
+  public void setUserProfileId(byte[] userProfileId) {
+    this.userProfileId = userProfileId;
+  }
 
-    public void setGender(String gender) {
-	this.gender = gender;
-    }
 
-    @Column(name = "PROFILE_IMAGE", length = 300)
-    public String getProfileImage() {
-	return this.profileImage;
-    }
+  @Column(name = "USER_ID", nullable = false)
+  public byte[] getUserId() {
+    return this.userId;
+  }
 
-    public void setProfileImage(String profileImage) {
-	this.profileImage = profileImage;
-    }
+  public void setUserId(byte[] userId) {
+    this.userId = userId;
+  }
 
-    @Column(name = "WORK", length = 45)
-    public String getWork() {
-	return this.work;
-    }
 
-    public void setWork(String work) {
-	this.work = work;
-    }
+  @Column(name = "FIRST_NAME", length = 100)
+  public String getFirstName() {
+    return this.firstName;
+  }
 
-    @Column(name = "CONTACT_NUMBER", length = 20)
-    public String getContactNumber() {
-	return this.contactNumber;
-    }
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
 
-    public void setContactNumber(String contactNumber) {
-	this.contactNumber = contactNumber;
-    }
 
-    @Column(name = "BIRTH_DATE", length = 10)
-    public String getBirthDate() {
-	return this.birthDate;
-    }
+  @Column(name = "LAST_NAME", length = 100)
+  public String getLastName() {
+    return this.lastName;
+  }
 
-    public void setBirthDate(String birthDate) {
-	this.birthDate = birthDate;
-    }
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
 
-    @Column(name = "BIRTH_YEAR", length = 5)
-    public String getBirthYear() {
-	return this.birthYear;
-    }
 
-    public void setBirthYear(String birthYear) {
-	this.birthYear = birthYear;
-    }
+  @Column(name = "GENDER", length = 1)
+  public String getGender() {
+    return this.gender;
+  }
 
-    @Column(name = "LANGUAGE", length = 50)
-    public String getLanguage() {
-	return this.language;
-    }
+  public void setGender(String gender) {
+    this.gender = gender;
+  }
 
-    public void setLanguage(String language) {
-	this.language = language;
-    }
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "CREATED_DATE", length = 19)
-    public Date getCreatedDate() {
-	return this.createdDate;
-    }
+  @Column(name = "PROFILE_IMAGE", length = 300)
+  public String getProfileImage() {
+    return this.profileImage;
+  }
 
-    public void setCreatedDate(Date createdDate) {
-	this.createdDate = createdDate;
-    }
+  public void setProfileImage(String profileImage) {
+    this.profileImage = profileImage;
+  }
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "UPDATED_DATE", length = 19)
-    public Date getUpdatedDate() {
-	return this.updatedDate;
-    }
 
-    public void setUpdatedDate(Date updatedDate) {
-	this.updatedDate = updatedDate;
-    }
+  @Column(name = "WORK", length = 45)
+  public String getWork() {
+    return this.work;
+  }
+
+  public void setWork(String work) {
+    this.work = work;
+  }
+
+
+  @Column(name = "CONTACT_NUMBER", length = 20)
+  public String getContactNumber() {
+    return this.contactNumber;
+  }
+
+  public void setContactNumber(String contactNumber) {
+    this.contactNumber = contactNumber;
+  }
+
+
+  @Column(name = "BIRTH_DATE", length = 10)
+  public String getBirthDate() {
+    return this.birthDate;
+  }
+
+  public void setBirthDate(String birthDate) {
+    this.birthDate = birthDate;
+  }
+
+
+  @Column(name = "BIRTH_YEAR", length = 5)
+  public String getBirthYear() {
+    return this.birthYear;
+  }
+
+  public void setBirthYear(String birthYear) {
+    this.birthYear = birthYear;
+  }
+
+
+  @Column(name = "LANGUAGE", length = 50)
+  public String getLanguage() {
+    return this.language;
+  }
+
+  public void setLanguage(String language) {
+    this.language = language;
+  }
+
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "CREATED_DATE", length = 19)
+  public Date getCreatedDate() {
+    return this.createdDate;
+  }
+
+  public void setCreatedDate(Date createdDate) {
+    this.createdDate = createdDate;
+  }
+
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "UPDATED_DATE", length = 19)
+  public Date getUpdatedDate() {
+    return this.updatedDate;
+  }
+
+  public void setUpdatedDate(Date updatedDate) {
+    this.updatedDate = updatedDate;
+  }
+
+
 
 }
+
+

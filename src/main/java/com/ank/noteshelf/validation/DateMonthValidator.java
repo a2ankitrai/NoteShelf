@@ -19,7 +19,7 @@ public class DateMonthValidator implements ConstraintValidator<DateMonth, String
 		String errorMessage = null;
 		boolean isValid = true;
 		
-		if(value.length() != 6) { 
+		if(value != null && value.length() != 6) { 
 			return false;
 		}
  

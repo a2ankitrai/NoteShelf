@@ -43,6 +43,7 @@ public class ProfileServiceImpl implements ProfileService {
 
 	if (userProfile.isPresent()) {
 	    profileResponse = ProfileObjectsMapper.INSTANCE.mapUserProfileToProfileVO(userProfile.get());
+
 	} else {
 	    throw new EmptyResultDataAccessException(NsMessageConstant.NO_PROFILE_FOUND_BY_ID, 1);
 	}
@@ -55,6 +56,8 @@ public class ProfileServiceImpl implements ProfileService {
 
 	ProfileResponse profileResponse = null;
 	NsUserProfile userProfile = null;
+
+	// correct optional use after preparing optional documentation
 	Optional<NsUserProfile> userProfileOptional = profileRepository.findByUserId(userId);
 
 	if (userProfileOptional.isPresent()) {
@@ -163,11 +166,9 @@ public class ProfileServiceImpl implements ProfileService {
 	    pictureResponse.setContentType(blob.getContentType());
 	    pictureResponse.setSize(blob.getSize());
 	    pictureResponse.setDownloadUri(blob.getMediaLink());
-	}
-	else { 
+	} else {
 	    throw new EmptyResultDataAccessException(NsMessageConstant.NO_PICTURE_FOUND_FOR_USER, 1);
 	}
-	 
 
 	return pictureResponse;
     }

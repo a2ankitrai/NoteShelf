@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-import com.ank.noteshelf.input.UserSignUpDetail;
+import com.ank.noteshelf.input.UserRegistrationInput;
 import com.ank.noteshelf.model.NsUser;
 import com.ank.noteshelf.model.NsUserAuthDetail;
 import com.ank.noteshelf.model.NsUserProfile;
@@ -22,12 +22,12 @@ public interface UserObjectsMapper {
 
     @Mapping(source = "userId", target = "userId", qualifiedByName = "mappUuidToByte")
     @Mapping(source = "userSignUpDetail.userName", target = "userName")
-    @Mapping(source = "userSignUpDetail.firstName", target = "firstName")
-    @Mapping(source = "userSignUpDetail.lastName", target = "lastName")
+//    @Mapping(source = "userSignUpDetail.firstName", target = "firstName")
+//    @Mapping(source = "userSignUpDetail.lastName", target = "lastName")
     @Mapping(source = "userSignUpDetail.emailAddress", target = "email")
     @Mapping(source = "now", target = "createdDate")
     @Mapping(source = "now", target = "updatedDate")
-    NsUser mapUserSignUpToNsUser(UserSignUpDetail userSignUpDetail, Date now, UUID userId);
+    NsUser mapUserSignUpToNsUser(UserRegistrationInput userSignUpDetail, Date now, UUID userId);
 
     @Mapping(source = "roleId", target = "roleId", qualifiedByName = "mappUuidToByte")
     @Mapping(source = "user.userId", target = "userId")
@@ -52,19 +52,34 @@ public interface UserObjectsMapper {
     @Mapping(source = "user.createdDate", target = "createdDate")
     @Mapping(source = "user.updatedDate", target = "updatedDate")
     @Mapping(source = "userAuthDetailId", target = "userAuthDetailId", qualifiedByName = "mappUuidToByte")
-    NsUserAuthDetail mapUserSignUpToUserAuthDetail(NsUser user, UserSignUpDetail userSignUpDetail,
+    NsUserAuthDetail mapUserSignUpToUserAuthDetail(NsUser user, UserRegistrationInput userSignUpDetail,
 	    UUID userAuthDetailId);
 
     @Mapping(source = "user.userId", target = "userId", qualifiedByName = "mapByteToUuid")
     @Mapping(source = "user.userName", target = "userName")
-    @Mapping(source = "user.firstName", target = "firstName")
-    @Mapping(source = "user.lastName", target = "lastName")
+//    @Mapping(source = "user.firstName", target = "firstName")
+//    @Mapping(source = "user.lastName", target = "lastName")
     @Mapping(source = "user.createdDate", target = "createdDate")
     @Mapping(source = "user.updatedDate", target = "updatedDate")
     @Mapping(source = "userProfile.userProfileId", target = "userProfileId", qualifiedByName = "mapByteToUuid")
     @Mapping(source = "userRole.roleName", target = "role", qualifiedByName = "mapUserRole")
     @Mapping(source = "userAuthDetail.authType", target = "authType", qualifiedByName = "mapUserAuthType")
-    UserResponse mapUserToUserVO(NsUser user, NsUserProfile userProfile, NsUserRoles userRole,
+    UserResponse mapUserMetaDataToUserVO(NsUser user, NsUserProfile userProfile, NsUserRoles userRole,
 	    NsUserAuthDetail userAuthDetail);
+
+    @Mapping(source = "user.userId", target = "userId", qualifiedByName = "mapByteToUuid")
+    @Mapping(source = "user.userName", target = "userName")
+    @Mapping(source = "user.email", target = "email")
+    @Mapping(source = "user.createdDate", target = "createdDate")
+    @Mapping(source = "user.updatedDate", target = "updatedDate")
+    UserResponse mapUserToUserVO(NsUser user);
+
+//    check how to generate mappings with void return type with 2 arguments.
+//    @Mapping(source = "user.userId", target = "userResponse.userId", qualifiedByName = "mapByteToUuid")
+//    @Mapping(source = "user.userName", target = "userResponse.userName")
+//    @Mapping(source = "user.email", target = "userResponse.email")
+//    @Mapping(source = "user.createdDate", target = "userResponse.createdDate")
+//    @Mapping(source = "user.updatedDate", target = "userResponse.updatedDate")
+//    void mapUserToUserResponse(NsUser user, UserResponse userResponse);
 
 }
