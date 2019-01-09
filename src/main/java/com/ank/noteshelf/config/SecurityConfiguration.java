@@ -17,76 +17,100 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.ank.ankoauth2client.security.AnkOauth2SecurityConfiguration;
+import com.ank.noteshelf.filter.NsOauth2WebTokenAuthenticationFilter;
+import com.ank.noteshelf.service.impl.NsOAuth2UserService;
 import com.ank.noteshelf.service.impl.NsUserDetailServiceImpl;
 
 @EnableWebSecurity
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
+    @Autowired
+    private NsOAuth2UserService nsOAuth2UserService;
 
-    http.csrf().disable();
-// create separate branch for oauth 2 implementation
-    http
+    @Autowired
+    private AnkOauth2SecurityConfiguration ankOauth2SecurityConfiguration;
 
-        .cors().and()
+    @Autowired
+    private NsOauth2WebTokenAuthenticationFilter nsOauth2WebTokenAuthenticationFilter;
 
-        .authorizeRequests()
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
 
-        .antMatchers("/config").hasRole("ADMIN")
+	http.csrf().disable();
 
+	http
 
-        .antMatchers("/user/registration", "/greeting2").permitAll()
+		.cors().and()
 
-        .anyRequest().authenticated()
+		.authorizeRequests()
 
-        .and()
+		.antMatchers("/config").hasRole("ADMIN")
 
-        .requestCache().requestCache(new NullRequestCache())
+		.antMatchers("/user/registration", "/greeting2", "/user/verify-registration-email",
+			"/user/forgot-password", "/user/verify-password-reset-token", "/user/reset-password",
+			"/user/login")
+		.permitAll()
 
-        .and()
+		.antMatchers("/login/oauth2/code/*").permitAll()
 
-        .httpBasic();
+//		.antMatchers("/user/currentUser").permitAll()
 
-  }
+		.anyRequest()
 
-  @Autowired
-  NsUserDetailServiceImpl nsUserDetailService;
+//		.permitAll()
+//		
+		.authenticated()
 
-  @Autowired
-  PasswordEncoder passwordEncoder;
+		.and()
 
-  @Autowired
-  public void configure(AuthenticationManagerBuilder auth) throws Exception {
+		.requestCache().requestCache(new NullRequestCache())
 
-    auth.userDetailsService(nsUserDetailService).passwordEncoder(passwordEncoder);
+		.and()
 
-  }
+		.httpBasic();
 
-  @Bean
-  CorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration configuration = new CorsConfiguration();
-    
-    configuration.setAllowedOrigins(Arrays.asList("*"));
-    configuration.addAllowedHeader("*");
-    configuration.addAllowedMethod("*");
-    configuration.setExposedHeaders(Arrays.asList("X-Auth-Token"));
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", configuration);
-    return source;
-  }
+	ankOauth2SecurityConfiguration.configure(http, nsOauth2WebTokenAuthenticationFilter, nsOAuth2UserService);
 
-  /**
-   * Create the Security configuration authenticating with HTTP-Basic and setting the
-   * auth-token-header with spring's `HeaderHttpSessionIdResolver`
-   * 
-   * Once the login is validated `X-Auth-Token header` with the session value needs to be passed in
-   * subsequent requests.
-   */
-  @Bean
-  public HttpSessionIdResolver httpSessionIdResolver() {
-    return HeaderHttpSessionIdResolver.xAuthToken();
-  }
+    }
+
+    @Autowired
+    NsUserDetailServiceImpl nsUserDetailService;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+
+	auth.userDetailsService(nsUserDetailService).passwordEncoder(passwordEncoder);
+
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+	CorsConfiguration configuration = new CorsConfiguration();
+
+	configuration.setAllowedOrigins(Arrays.asList("*"));
+	configuration.addAllowedHeader("*");
+	configuration.addAllowedMethod("*");
+	configuration.setExposedHeaders(Arrays.asList("X-Auth-Token"));
+	UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+	source.registerCorsConfiguration("/**", configuration);
+	return source;
+    }
+
+    /**
+     * Create the Security configuration authenticating with HTTP-Basic and setting
+     * the auth-token-header with spring's `HeaderHttpSessionIdResolver`
+     * 
+     * Once the login is validated `X-Auth-Token header` with the session value
+     * needs to be passed in subsequent requests.
+     */
+    @Bean
+    public HttpSessionIdResolver httpSessionIdResolver() {
+	return HeaderHttpSessionIdResolver.xAuthToken();
+    }
 
 }

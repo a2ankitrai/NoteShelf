@@ -16,10 +16,10 @@ import lombok.ToString;
 @Document(collection = "NS_NOTES")
 public class NsNotesData {
 
-	@Id
-	private String id;
-	
-	private String noteTitle;
-	private String noteContent;
-	
+    @Id
+    private String id;
+
+    private String noteTitle;
+    private String noteContent;
+
 }

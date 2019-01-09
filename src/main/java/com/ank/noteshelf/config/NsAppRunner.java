@@ -18,8 +18,9 @@ import com.ank.noteshelf.response.AppConfigResponse;
 import com.ank.noteshelf.service.impl.AppConfigServiceImpl;
 
 /**
- * This class will load additional data during application boot up like Cache Configurations.
- * */
+ * This class will load additional data during application boot up like Cache
+ * Configurations.
+ */
 @Component
 @Order(value = 0)
 public class NsAppRunner implements CommandLineRunner {
@@ -32,6 +33,14 @@ public class NsAppRunner implements CommandLineRunner {
 
     @Bean
     public CacheManager cacheManager() {
+	/*
+	 * Note: This is by no means a sophisticated CacheManager; it comes with no
+	 * cache configuration options. However, it may be useful for testing or simple
+	 * caching scenarios. For advanced local caching needs, consider {@link
+	 * org.springframework.cache.jcache.JCacheCacheManager}, {@link
+	 * org.springframework.cache.ehcache.EhCacheCacheManager}, {@link
+	 * org.springframework.cache.caffeine.CaffeineCacheManager}.
+	 */
 	return new ConcurrentMapCacheManager(CACHE_APP_CONFIG);
     }
 

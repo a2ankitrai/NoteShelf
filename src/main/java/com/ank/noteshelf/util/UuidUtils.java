@@ -34,4 +34,9 @@ public class UuidUtils {
     public static UUID generatefromString(String uuid) {
 	return UUID.fromString(uuid);
     }
+
+    public static String generateRandomStringWithoutDashes() {
+	return generateRandomUuid().toString().replace("-", "");
+    }
+
 }

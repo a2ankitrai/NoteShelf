@@ -1,7 +1,5 @@
 package com.ank.noteshelf.controller;
 
-import static com.ank.noteshelf.resource.NsCommonConstant.USER_LOGIN_DETAIL;
-
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -22,9 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ank.noteshelf.input.NoteInput;
-import com.ank.noteshelf.input.UserLoginDetail;
 import com.ank.noteshelf.response.NoteResponse;
 import com.ank.noteshelf.service.NoteService;
+import com.ank.noteshelf.util.UserDetailUtil;
 import com.ank.noteshelf.util.UuidUtils;
 
 @RequestMapping("/note")
@@ -43,8 +41,7 @@ public class NoteController {
      */
     @PostMapping
     public ResponseEntity<NoteResponse> createNote(@RequestBody @Valid NoteInput noteInput, HttpSession session) {
-	UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute(USER_LOGIN_DETAIL);
-	NoteResponse noteResponse = noteService.createNote(noteInput, userLoginDetail.getUserId());
+	NoteResponse noteResponse = noteService.createNote(noteInput, UserDetailUtil.getUserIdFromSession(session));
 	return new ResponseEntity<NoteResponse>(noteResponse, HttpStatus.OK);
     }
 
@@ -55,8 +52,8 @@ public class NoteController {
      */
     @GetMapping("/all")
     public ResponseEntity<List<NoteResponse>> getAllNotes(HttpSession session) {
-	UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute(USER_LOGIN_DETAIL);
-	List<NoteResponse> noteResponseList = noteService.getAllNotesByUser(userLoginDetail.getUserId());
+	List<NoteResponse> noteResponseList = noteService
+		.getAllNotesByUser(UserDetailUtil.getUserIdFromSession(session));
 	System.out.println("All notes " + noteResponseList);
 	return new ResponseEntity<List<NoteResponse>>(noteResponseList, HttpStatus.OK);
     }
@@ -79,8 +76,8 @@ public class NoteController {
 	NoteResponse noteResponse = null;
 	ResponseEntity<NoteResponse> response = null;
 
-	UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute(USER_LOGIN_DETAIL);
-	noteResponse = noteService.getNoteById(UuidUtils.asBytesFromString(noteId), userLoginDetail.getUserId());
+	noteResponse = noteService.getNoteById(UuidUtils.asBytesFromString(noteId),
+		UserDetailUtil.getUserIdFromSession(session));
 
 	HttpStatus status = noteResponse != null ? HttpStatus.OK : HttpStatus.NOT_FOUND;
 	response = new ResponseEntity<>(noteResponse, status);
@@ -97,9 +94,8 @@ public class NoteController {
 	    @RequestBody @Valid NoteInput noteInput, HttpSession session) {
 
 	ResponseEntity<NoteResponse> response = null;
-	UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute(USER_LOGIN_DETAIL);
 	NoteResponse noteResponse = noteService.updateNote(noteInput, UuidUtils.asBytesFromString(noteId),
-		userLoginDetail.getUserId());
+		UserDetailUtil.getUserIdFromSession(session));
 	response = new ResponseEntity<NoteResponse>(noteResponse, HttpStatus.OK);
 	return response;
     }
@@ -122,8 +118,8 @@ public class NoteController {
 	Boolean isDeleted = null;
 	ResponseEntity<Boolean> response = null;
 
-	UserLoginDetail userLoginDetail = (UserLoginDetail) session.getAttribute(USER_LOGIN_DETAIL);
-	isDeleted = noteService.deleteNoteById(UuidUtils.asBytesFromString(noteId), userLoginDetail.getUserId());
+	isDeleted = noteService.deleteNoteById(UuidUtils.asBytesFromString(noteId),
+		UserDetailUtil.getUserIdFromSession(session));
 
 	HttpStatus status = isDeleted ? HttpStatus.OK : HttpStatus.NOT_FOUND;
 	response = new ResponseEntity<>(isDeleted, status);

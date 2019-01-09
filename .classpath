@@ -8,6 +8,7 @@
 	</classpathentry>
 	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
 		<attributes>
+			<attribute name="test" value="true"/>
 			<attribute name="optional" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
@@ -27,6 +28,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Users/ankirai/Documents/Personal_Docs/code/resource/plugins/lombok/lombok.jar"/>
+	<classpathentry kind="lib" path="src/main/resources/entities-0.0.1-SNAPSHOT.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ankoauth2client"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

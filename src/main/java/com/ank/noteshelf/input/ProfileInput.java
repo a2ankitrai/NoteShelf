@@ -3,7 +3,6 @@ package com.ank.noteshelf.input;
 import javax.validation.constraints.Size;
 
 import com.ank.noteshelf.validation.annotation.AlphaNumeric;
-import com.ank.noteshelf.validation.annotation.DateMonth;
 import com.ank.noteshelf.validation.annotation.Numeric;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

@@ -1,5 +1,6 @@
 package com.ank.noteshelf.service.impl;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
@@ -7,9 +8,13 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ank.ankoauth2client.resource.AuthType;
+import com.ank.ankoauth2client.resource.UserDto;
+import com.ank.noteshelf.event.UserEventPublisher;
 import com.ank.noteshelf.exception.NsRuntimeException;
 import com.ank.noteshelf.input.UserRegistrationInput;
 import com.ank.noteshelf.mapstruct.UserObjectsMapper;
@@ -21,10 +26,7 @@ import com.ank.noteshelf.repository.RoleRepository;
 import com.ank.noteshelf.repository.UserAuthDetailRepository;
 import com.ank.noteshelf.repository.UserProfileRepository;
 import com.ank.noteshelf.repository.UserRepository;
-import com.ank.noteshelf.resource.AuthType;
 import com.ank.noteshelf.resource.Role;
-import com.ank.noteshelf.resource.UserConstant;
-import com.ank.noteshelf.response.UserResponse;
 import com.ank.noteshelf.service.UserService;
 import com.ank.noteshelf.util.UuidUtils;
 
@@ -43,94 +45,128 @@ public class UserServiceImpl implements UserService {
     RoleRepository roleRepository;
 
     @Autowired
-    private UserProfileRepository userProfileRepository;
+    UserProfileRepository userProfileRepository;
+
+    @Autowired
+    UserEventPublisher userEventPublisher;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
-    public UserResponse registerUser(UserRegistrationInput userRegistrationInput) {
+    public UserDto registerAppUser(UserRegistrationInput userRegistrationInput) {
 
-	logger.debug("UserServiceImpl :: registerUser :: start ");
+	UserDto userDto = new UserDto();
 
-	if (emailExist(userRegistrationInput.getEmailAddress())) {
-	    throw new NsRuntimeException("Email address already exists: " + userRegistrationInput.getEmailAddress());
+	userDto.setUserName(userRegistrationInput.getUserName());
+	userDto.setEmail(userRegistrationInput.getEmailAddress());
+	userDto.setPassword(userRegistrationInput.getPassword());
+	userDto.setAuthType(AuthType.APP);
+
+	return registerUser(userDto);
+
+    }
+
+    @Transactional
+    public UserDto registerUser(UserDto userDto) {
+
+	if (emailExist(userDto.getEmail())) {
+	    throw new NsRuntimeException("Email address already exists: " + userDto.getEmail());
 	}
 
-	if (userNameExist(userRegistrationInput.getUserName())) {
-	    throw new NsRuntimeException("User Name already exists: " + userRegistrationInput.getUserName());
+	if (userNameExist(userDto.getUserName())) {
+	    throw new NsRuntimeException("User Name already exists: " + userDto.getUserName());
 	}
 
 	Date now = new Date();
-
 	UUID userId = UuidUtils.generateRandomUuid();
-	NsUser user = UserObjectsMapper.INSTANCE.mapUserSignUpToNsUser(userRegistrationInput, now, userId);
 
+	NsUser user = UserObjectsMapper.INSTANCE.mapUserDtoToNsUser(userDto, now, userId);
 	userRepository.save(user);
+	userDto.setUserId(user.getUserId());
 
-	NsUserAuthDetail userAuthDetail = UserObjectsMapper.INSTANCE.mapUserSignUpToUserAuthDetail(user,
-		userRegistrationInput, userId);
-
-	if (userRegistrationInput.getAuthType().equals(AuthType.APP.getValue())) {
-	    userAuthDetail.setEnabled(UserConstant.N);
-	}
+	NsUserAuthDetail userAuthDetail = UserObjectsMapper.INSTANCE.mapUserDtoToNsUserAuthDetail(user, userDto);
 	userAuthDetailRepository.save(userAuthDetail);
 
-	// The below can be converted into an event published and listener mechanisms.
 	NsUserRoles userRole = UserObjectsMapper.INSTANCE.mapUserToUserRoles(user, Role.USER.toString(),
 		UuidUtils.generateRandomUuid());
 	roleRepository.save(userRole);
+	userDto.setRoles(Arrays.asList(userRole.getRoleName()));
 
-	NsUserProfile userProfile = UserObjectsMapper.INSTANCE.mapUserToUserProfile(user, userId);
-	
-	/**
-	 * temporary code for hardcoding profile name
-	 * */
-	userProfile.setFirstName("John");
-	userProfile.setLastName("Doe");
-	userProfile.setGender("M");
-	userProfile.setLanguage("Hebrew");
-	userProfile.setWork("Blockchain developer");
-	
+	NsUserProfile userProfile = UserObjectsMapper.INSTANCE.mapUserDtoToUserProfile(user, userDto);
 	userProfileRepository.save(userProfile);
 
-	UserResponse userResponse = null;
-	if (user != null && userAuthDetail != null) {
-	    userResponse = UserObjectsMapper.INSTANCE.mapUserMetaDataToUserVO(user, userProfile, userRole,
-		    userAuthDetail);
-	}
+	userEventPublisher.publishUserRegistrationEmailEvent(userDto);
 
-	logger.debug("UserServiceImpl :: registerUser :: end ");
-	return userResponse;
+	return userDto;
     }
 
     @Override
-    public UserResponse getUserByUserId(byte[] userId) {
+    public UserDto resetPassword(String userEmail, String password) {
+
+	NsUser user = userRepository.findByEmail(userEmail);
+	UserDto userDto = null;
+
+	if (user != null) {
+	    NsUserAuthDetail userAuthDetail = userAuthDetailRepository.findByUserId(user.getUserId());
+	    userAuthDetail.setPassword(passwordEncoder.encode(password));
+	    userAuthDetailRepository.save(userAuthDetail);
+
+	    userDto = UserObjectsMapper.INSTANCE.mapUserToUserDto(user);
+	}
+
+	return userDto;
+    }
+
+    @Override
+    public UserDto getUserByUserId(byte[] userId) {
 
 	/**
-	 *  check how this DB call can be avoided. 
-	 *  Store the user with active session in cache outside rest service and fetch the same from there*/
+	 * check how this DB call can be avoided. Store the user with active session in
+	 * cache outside rest service and fetch the same from there
+	 */
 	Optional<NsUser> userOptional = userRepository.findByUserId(userId);
-	UserResponse userResponse = null;
+	UserDto userDto = userOptional.map(user -> UserObjectsMapper.INSTANCE.mapUserToUserDto(user)).orElse(null);
 
-//	proper use of optional is required
-//	userOptional.map(user -> {
-//	    UserObjectsMapper.INSTANCE.mapUserToUserResponse(user, userResponse);
-//	    return userResponse;
-//	});
-//	
-//	userOptional.ifPresent(user -> {
-//	    userResponse = new UserResponse();
-//	    UserObjectsMapper.INSTANCE.mapUserToUserResponse(user, userResponse);
-//	});
-
-	userResponse = userOptional.map(user -> UserObjectsMapper.INSTANCE.mapUserToUserVO(user)).orElse(null);
-
-//	if (userOptional.isPresent()) {
-//	    NsUser user = userOptional.get();
-//	    userResponse = UserObjectsMapper.INSTANCE.mapUserToUserVO(user);
-//	}
-
-	return userResponse;
+	return userDto;
     }
+
+    public UserDto getUserByEmail(String email) {
+
+	Optional<NsUser> userOptional = Optional.ofNullable(userRepository.findByEmail(email));
+	UserDto userDto = userOptional.map(user -> UserObjectsMapper.INSTANCE.mapUserToUserDto(user)).orElse(null);
+
+	if (userDto != null) {
+	    NsUserAuthDetail userAuthDetail = userAuthDetailRepository.findByUserId(userDto.getUserId());
+	    userDto.setAuthType(AuthType.valueOf(userAuthDetail.getAuthType()));
+	}
+
+	return userDto;
+    }
+
+//    public UserDto getUserByUserID(byte[] userId) {
+//
+//	Optional<NsUser> user = userRepository.findByUserId(userId);
+//
+//	if (user == null) {
+//	    throw new UsernameNotFoundException("No User exists with credentials: " + userNameOrEmail);
+//	}
+//
+//	NsUserAuthDetail userAuthDetail = userAuthDetailRepository.findByUserId(user.getUserId());
+//
+//	List<NsUserRoles> userRoleList = roleRepository.findAllByUserId(user.getUserId());
+//
+//	NsUserProfile userProfile = userProfileRepository.findByUserId(user.getUserId()).get();
+//
+//	UserDto userDto = UserObjectsMapper.INSTANCE.mapUserDataToUserDto(user, userAuthDetail, userRoleList,
+//		userProfile);
+//
+//	UserDetailsPrincipal userDetailsPrincipal = new UserDetailsPrincipal(userDto);
+//
+//	return userDetailsPrincipal;
+//
+//    }
 
     private boolean emailExist(final String email) {
 	return userRepository.findByEmail(email) != null;

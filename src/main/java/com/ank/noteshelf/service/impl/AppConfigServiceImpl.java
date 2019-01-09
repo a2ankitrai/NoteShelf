@@ -43,6 +43,7 @@ public class AppConfigServiceImpl {
 	return response;
     }
 
+//    Place caching here..
     public AppConfigResponse getConfigurationByName(String configName) {
 
 	NsApplicationConfiguration nsApplicationConfiguration = applicationConfigRepository
@@ -57,6 +58,7 @@ public class AppConfigServiceImpl {
 	return appConfigResponse;
     }
 
+//    place caching here..
     public NsGenericResponse updateConfigurationByName(ConfigurationInput configInput) {
 
 	NsApplicationConfiguration appConfig = applicationConfigRepository

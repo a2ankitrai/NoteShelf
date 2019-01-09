@@ -9,12 +9,12 @@ import com.ank.noteshelf.util.UuidUtils;
 public class NsCommonMapperFunctions {
 
     @Named("mappUuidToByte")
-    public byte[] mapUuidToByte(UUID uuid) {
+    public static byte[] mapUuidToByte(UUID uuid) {
 	return UuidUtils.asBytes(uuid);
     }
 
     @Named("mapByteToUuid")
-    public UUID mapByteToUuid(byte[] bytes) {
+    public static UUID mapByteToUuid(byte[] bytes) {
 	return UuidUtils.asUuid(bytes);
     }
 }

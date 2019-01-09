@@ -15,7 +15,7 @@ import lombok.Data;
 
 //Principal implementation.
 @Data
-public class UserLoginDetail implements UserDetails {
+public class UserDetailsPrincipalBackup implements UserDetails {
     
     /**
      * This class needs to implement OidcUser, CredentialsContainer also other than UserDetails for supporting oauth2 login.
@@ -28,7 +28,7 @@ public class UserLoginDetail implements UserDetails {
     private List<String> roles;
     private AccountFlag accountFlag;
 
-    public UserLoginDetail(NsUser user, String password, List<String> roles, AccountFlag accountFlag) {
+    public UserDetailsPrincipalBackup(NsUser user, String password, List<String> roles, AccountFlag accountFlag) {
 	this.userId = user.getUserId();
 	this.userName = user.getUserName();
 	this.password = password;

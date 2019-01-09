@@ -18,6 +18,8 @@ public interface UserRepository extends JpaRepository<NsUser, byte[]> {
 
     NsUser findByEmail(String email);
 
+    NsUser findByUserNameOrEmail(String userName, String email);
+
     Optional<NsUser> findByUserId(byte[] userId);
 
 }

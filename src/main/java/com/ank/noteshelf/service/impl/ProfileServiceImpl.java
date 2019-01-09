@@ -16,7 +16,7 @@ import com.ank.noteshelf.exception.NsRuntimeException;
 import com.ank.noteshelf.input.ProfileInput;
 import com.ank.noteshelf.mapstruct.ProfileObjectsMapper;
 import com.ank.noteshelf.model.NsUserProfile;
-import com.ank.noteshelf.repository.ProfileRepository;
+import com.ank.noteshelf.repository.UserProfileRepository;
 import com.ank.noteshelf.resource.NsMessageConstant;
 import com.ank.noteshelf.response.NsGenericResponse;
 import com.ank.noteshelf.response.PictureResponse;
@@ -29,7 +29,7 @@ import com.google.cloud.storage.Blob;
 public class ProfileServiceImpl implements ProfileService {
 
     @Autowired
-    ProfileRepository profileRepository;
+    UserProfileRepository profileRepository;
 
     @Autowired
     @Qualifier("googleCloudStorageService")

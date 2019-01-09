@@ -1,5 +1,5 @@
 package com.ank.noteshelf.model;
-// Generated Nov 11, 2018 10:39:00 PM by Hibernate Tools 5.2.11.Final
+// Generated Dec 19, 2018 12:03:43 AM by Hibernate Tools 5.2.11.Final
 
 
 import java.util.Date;

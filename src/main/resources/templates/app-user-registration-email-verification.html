@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head></head>
+<body>
+
+	<h2>
+		Hello <span data-th-text="${userName}"></span>!!!
+	</h2>
+	<p>
+		Thanks for registering with NoteShelf. You are almost there. <br />
+		Before we can get started, please click below button to activate your
+		account.
+	</p>
+
+	<a data-th-href="${emailVerificationlink}">
+		<button>Activate Account</button>
+	</a>
+
+	<!-- <h2 style="color: fuchsia;">
+		<span data-th-text="${emailVerificationToken}"></span>
+	</h2> -->
+
+</body>
+</html>

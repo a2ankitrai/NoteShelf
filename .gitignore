@@ -36,4 +36,6 @@ notes/
 
 # arbit
 
+src/main/resources/application.yml
+
 bkp/
