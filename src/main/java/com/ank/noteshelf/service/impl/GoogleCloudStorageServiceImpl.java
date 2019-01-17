@@ -41,7 +41,7 @@ public class GoogleCloudStorageServiceImpl implements FileStorageService {
 
     private void initializeBucket() {
 
-	if (!bucketInitialized)
+	if (bucketInitialized)
 	    return;
 
 	Credentials credentials = null;

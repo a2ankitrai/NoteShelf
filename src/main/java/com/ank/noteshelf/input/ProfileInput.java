@@ -11,7 +11,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -33,7 +32,7 @@ public class ProfileInput {
 
     @JsonProperty("contact_number")
     @Numeric
-    @Size(min = 8, max = 10, message = "Entered contact number is not valid.")
+    @Size(min = 6, max = 10, message = "Entered contact number is not valid.")
     private String contactNumber;
 
     @JsonProperty("birth_date")
