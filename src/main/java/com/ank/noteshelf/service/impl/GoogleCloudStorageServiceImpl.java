@@ -12,6 +12,7 @@ import java.nio.charset.StandardCharsets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.CacheManager;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,6 +34,7 @@ import com.google.cloud.storage.StorageOptions;
 public class GoogleCloudStorageServiceImpl implements FileStorageService {
 
     @Autowired
+    @Lazy
     private CacheManager cacheManager;
 
     private Storage storage;

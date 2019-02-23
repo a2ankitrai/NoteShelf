@@ -31,6 +31,9 @@ public class NsAppRunner implements CommandLineRunner {
     @Autowired
     private CacheManager cacheManager;
 
+    @Autowired
+    private YAMLConfig myConfig;
+
     @Bean
     public CacheManager cacheManager() {
 	/*
@@ -61,6 +64,7 @@ public class NsAppRunner implements CommandLineRunner {
 	    }
 
 	}
+	logger.info("Configuration Name: " + myConfig.getName());
     }
 
 }

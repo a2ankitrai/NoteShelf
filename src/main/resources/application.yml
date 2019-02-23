@@ -1,12 +1,4 @@
 
-server:
-  port: 0000
-  servlet:
-    session:
-      timeout: 3000
-      
-        
-
 # spring actuators  
 # all web endpoints are available beneath the path /actuator with URLs of the form /actuator/{id}.   
 # changing the form of the endpoint URLs from /actuator/{id} to /manage/{id}. For example, the URL info endpoint would become /manage/info.
@@ -17,99 +9,22 @@ management:
     address: 127.0.0.1
   endpoints:
     web:
-      base-path: /manage  
-
-    
-# spring datasource properties
-spring:
-  cache:
-    type: redis
-  datasource:
-    url: jdbc:xxxx://xxxx:0000/xxxxxx?allowPublicKeyRetrieval=true&useSSL=false  
-    username: xxxxx
-    password: xxxxx
-    
-   # password: Admin1234
-    tomcat:
-      max-wait: 00000
-      max-active: 000
-      max-idle: 20
-      min-idle: 15
-      
-  # url: jdbc:mysql://noteshelf.cfjnwilujebu.ap-south-1.rds.amazonaws.com:3306/Note_shelf_DB    
-      
-  jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
-        id.new_generator_mappings: false
-        format_sql: false
-        
-  session:
-    store-type: redis
-    redis:
-      flush-mode: immediate
-      namespace: spring:session
-  # configure below for time out. find whether the same is in seconds or minutes.
-    timeout: 3600
-     
-            
-  redis:
-    host: xxxxxxx
-    port: 0000
-        
-  data:
-    mongodb:
-      host: xxxxxx
-      port: 000000  
-      database: xxxxxxxxxxx  
-      
-      
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            client-id: xxxxxxx-xxxxxxx.xxxx.xxxxxxxxx.xxx
-            client-secret: xxxxxx-xxxxxx-xxxxxxx
-            scope: openid, profile, email, address, phone
-          github:
-            client-id: xxxxxxxxxxxxxxxxxxxx
-            client-secret: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  
-             
-  mail:
-    host: xxxx.xxxx.xxx
-    port: 000          
-    username: xxxxxx@xxxxx.xxxx
-    password: xxxxxxxxxxx
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls: 
-            enable: true
-     
+      base-path: /manage
   
 logging:
   level:
     org.springframework: INFO      
-    
-# Oauth2 related properties 
 
-ank:
-  oauth2:
-   jwt:
-     secret: xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-   applicationUrl: xxxx://xxxxxxxxxxxxx:0000/
-   oauth2AuthenticationSuccessUrl: xxxx://xxxxxxx:0000/xxxxxxxxx?token= 
-    
-    
          
 # hibernate logging disabled temporarily        
    # org.hibernate.SQL: DEBUG
    # org.hibernate.type.descriptor.sql.BasicBinder: TRACE 
     
-  
+spring:
+  profiles:
+    active: prod
+    
+   
 
   
   

@@ -17,23 +17,28 @@ public class GreetingsController {
     private static final String template = "Hello, User no. %s : %s!";
     private final AtomicLong counter = new AtomicLong();
 
+    @GetMapping("/")
+    public String welcome(@RequestParam(name = "name", required = false, defaultValue = "Stranger") String name) {
+
+	logger.info("User entered : " + name);
+	return String.format(template, counter.incrementAndGet(), name);
+    }
+
     @GetMapping("/greeting")
     public String sayHello(@RequestParam(name = "name", required = false, defaultValue = "Stranger") String name) {
 
 	logger.info("User entered : " + name);
 	return String.format(template, counter.incrementAndGet(), name);
     }
-    
+
     @GetMapping("/greeting2")
     public ResponseEntity<String> greet2() {
-      
-//      String responseText = "{ \"value\" : \" Hellow iser\"}";
-      
-      String responseText =  String.format(template, counter.incrementAndGet(), "Jack fuscher");
-      
-      HttpStatus status = HttpStatus.OK ;
-      ResponseEntity<String> response = new ResponseEntity<>(responseText, status);
-      return response;
+
+	String responseText = String.format(template, counter.incrementAndGet(), "Jack fuscher");
+
+	HttpStatus status = HttpStatus.OK;
+	ResponseEntity<String> response = new ResponseEntity<>(responseText, status);
+	return response;
     }
 
 }
