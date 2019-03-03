@@ -3,10 +3,10 @@ package com.ank.noteshelf.error;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.ank.noteshelf.error.FieldErrorVO;
+import com.ank.noteshelf.error.NsFieldError;
  
 
-public class FieldErrorVOTest {
+public class NsFieldErrorTest {
 
 	@Test
 	public void testLombok() {
@@ -14,9 +14,9 @@ public class FieldErrorVOTest {
 		String field = "Test Field";
 		String message = "Test Message";
 		
-		FieldErrorVO errorVO = new FieldErrorVO(field, message);
+		NsFieldError errorVO = new NsFieldError(field, message);
 		
-		FieldErrorVO errorVO2 = new FieldErrorVO();
+		NsFieldError errorVO2 = new NsFieldError();
 		errorVO2.setField(field);
 		errorVO2.setMessage(message);
 		 

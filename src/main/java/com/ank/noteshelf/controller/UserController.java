@@ -23,7 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ank.ankoauth2client.resource.AuthType;
 import com.ank.ankoauth2client.resource.UserDto;
 import com.ank.ankoauth2client.service.AnkOauth2Service;
+import com.ank.noteshelf.dto.TokenDto;
 import com.ank.noteshelf.event.UserEventPublisher;
+import com.ank.noteshelf.exception.NsRuntimeException;
 import com.ank.noteshelf.input.UserRegistrationInput;
 import com.ank.noteshelf.response.NsGenericResponse;
 import com.ank.noteshelf.response.TokenVerificationResponse;
@@ -62,6 +64,7 @@ public class UserController {
 
 	UserDto userDto = null;
 	userDto = userService.registerAppUser(userSignUpDetail);
+
 	return new ResponseEntity<UserDto>(userDto, HttpStatus.OK);
     }
 
@@ -125,8 +128,19 @@ public class UserController {
     @PostMapping("/verify-registration-email")
     public ResponseEntity<TokenVerificationResponse> verifyRegistrationEmail(@RequestBody String tokenValue) {
 	TokenVerificationResponse tokenVerificationResponse = tokenService.verifyToken(tokenValue);
+
 	return new ResponseEntity<TokenVerificationResponse>(tokenVerificationResponse,
 		tokenVerificationResponse.getStatus());
+    }
+
+    @PostMapping("/activate-user-account")
+    public ResponseEntity<NsGenericResponse> activateUserAccount(@RequestBody TokenDto tokenDto) {
+
+	ResponseEntity<NsGenericResponse> response = null;
+	NsGenericResponse nsGenericResponse = userService.activateUserAccount(tokenDto.getUserName());
+
+	response = new ResponseEntity<>(nsGenericResponse, nsGenericResponse.getStatus());
+	return response;
     }
 
     @PostMapping("/forgot-password")

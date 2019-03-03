@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.ank.noteshelf.error.NsFieldError;
 import com.ank.noteshelf.error.ValidationErrorVO;
 
 @ControllerAdvice
@@ -105,6 +106,21 @@ public class NSResponseEntityExceptionHandler extends ResponseEntityExceptionHan
 	    validationErrorVO.addFieldError(fieldError.getField(), fieldError.getDefaultMessage());
 	}
 
+	ResponseEntity<Object> response = new ResponseEntity<Object>(validationErrorVO, HttpStatus.BAD_REQUEST);
+	return response;
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    @ExceptionHandler(NsUniqueConstraintException.class)
+    protected ResponseEntity<Object> handleNsUniqueConstraintException(NsUniqueConstraintException ex,
+	    WebRequest request) {
+
+	NsFieldError nsFieldError = new NsFieldError(ex.getField(), ex.getMessage());
+	
+	ValidationErrorVO validationErrorVO = new ValidationErrorVO();
+	validationErrorVO.addFieldError(nsFieldError.getField(), nsFieldError.getMessage());
+	
 	ResponseEntity<Object> response = new ResponseEntity<Object>(validationErrorVO, HttpStatus.BAD_REQUEST);
 	return response;
     }

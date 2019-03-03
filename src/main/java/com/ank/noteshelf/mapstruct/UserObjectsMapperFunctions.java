@@ -59,10 +59,7 @@ public class UserObjectsMapperFunctions {
     @Named("mapUserEnabled")
     public String mapUserEnabled(UserDto userDto) {
 	if (userDto.getAuthType() == AuthType.APP) {
-
-	    return UserConstant.Y;
-//	     commenting for time being. uncomment in prod.
-	    // return UserConstant.N;
+	    return UserConstant.N;
 	} else {
 	    return UserConstant.Y;
 	}

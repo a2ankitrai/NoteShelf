@@ -45,7 +45,7 @@ public class UserEventListener {
 	    TokenDto tokenDto = tokenService.createToken("REGISTRATION_EMAIL_TOKEN", userDto.getUserId());
 	    Map<String, Object> variablesMap = new HashMap<>();
 	    variablesMap.put("userName", userDto.getUserName());
-	    variablesMap.put("emailVerificationlink", properties.getApplicationUrl() + tokenDto.getTokenValue());
+	    variablesMap.put("emailVerificationlink", properties.getApplicationUrl() +"user/verify-email/"+ tokenDto.getTokenValue());
 	    templateName = "app-user-registration-email-verification";
 	    text = buildContent(templateName, variablesMap);
 

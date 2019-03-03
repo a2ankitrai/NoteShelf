@@ -35,15 +35,6 @@ public interface UserObjectsMapper {
     @Mapping(source = "role", target = "roleName")
     NsUserRoles mapUserToUserRoles(NsUser user, String role, UUID roleId);
 
-//    @Mapping(source = "user.userId", target = "userProfileId", qualifiedByName = "mappUuidToByte")
-//    @Mapping(source = "user.userId", target = "userId")
-//    @Mapping(source = "user.createdDate", target = "createdDate")
-//    @Mapping(source = "user.updatedDate", target = "updatedDate")
-//    @Mapping(source = "userDto", target = "firstName", qualifiedByName = "mapFirstName")
-//    @Mapping(source = "userDto", target = "lastName", qualifiedByName = "mapLastName")
-//    @Mapping(source = "userDto", target = "lastName", qualifiedByName = "mapLastName")
-//    NsUserProfile mapUserToUserProfile(NsUser user, UserDto userDto);
-
     @Mapping(source = "userDto.userId", target = "userProfileId")
     @Mapping(source = "userDto.userId", target = "userId")
     @Mapping(source = "user.createdDate", target = "createdDate")
