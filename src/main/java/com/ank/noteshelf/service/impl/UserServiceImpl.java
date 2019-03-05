@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ import com.ank.ankoauth2client.resource.AuthType;
 import com.ank.ankoauth2client.resource.UserDto;
 import com.ank.noteshelf.event.UserEventPublisher;
 import com.ank.noteshelf.exception.NsRuntimeException;
+import com.ank.noteshelf.exception.NsUniqueConstraintException;
 import com.ank.noteshelf.input.UserRegistrationInput;
 import com.ank.noteshelf.mapstruct.UserObjectsMapper;
 import com.ank.noteshelf.model.NsUser;
@@ -26,7 +28,10 @@ import com.ank.noteshelf.repository.RoleRepository;
 import com.ank.noteshelf.repository.UserAuthDetailRepository;
 import com.ank.noteshelf.repository.UserProfileRepository;
 import com.ank.noteshelf.repository.UserRepository;
+import com.ank.noteshelf.resource.NsMessageConstant;
 import com.ank.noteshelf.resource.Role;
+import com.ank.noteshelf.resource.UserConstant;
+import com.ank.noteshelf.response.NsGenericResponse;
 import com.ank.noteshelf.service.UserService;
 import com.ank.noteshelf.util.UuidUtils;
 
@@ -71,12 +76,12 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserDto registerUser(UserDto userDto) {
 
-	if (emailExist(userDto.getEmail())) {
-	    throw new NsRuntimeException("Email address already exists: " + userDto.getEmail());
+	if (emailExist(userDto.getEmail())) { 
+	    throw new NsUniqueConstraintException("email_address",  userDto.getEmail()+" : Email Address Already exists in the System.");
 	}
 
-	if (userNameExist(userDto.getUserName())) {
-	    throw new NsRuntimeException("User Name already exists: " + userDto.getUserName());
+	if (userNameExist(userDto.getUserName())) { 
+	    throw new NsUniqueConstraintException("user_name",  userDto.getUserName()+" : User Name Already exists in the System.");
 	}
 
 	Date now = new Date();
@@ -143,6 +148,27 @@ public class UserServiceImpl implements UserService {
 	}
 
 	return userDto;
+    }
+
+    public NsGenericResponse activateUserAccount(String userName) {
+	Optional<NsUser> userOptional = Optional.ofNullable(userRepository.findByUserName(userName));
+	byte[] userId = userOptional.map(user -> user.getUserId()).orElse(null);
+	NsUserAuthDetail userAuthDetail = userAuthDetailRepository.findByUserId(userId);
+	NsGenericResponse response = new NsGenericResponse();
+	if (userAuthDetail != null) {
+//	    commented this for testing 
+//	    userAuthDetail.setEnabled(UserConstant.Y);
+//	    userAuthDetailRepository.save(userAuthDetail);
+	    response = new NsGenericResponse(NsMessageConstant.ACCOUNT_ACTIVATED_SUCCESSFULLY, new Date());
+	    response.setErrorCode(0);
+	    response.setStatus(HttpStatus.OK);
+	} else {
+	    response = new NsGenericResponse(NsMessageConstant.ACCOUNT_ACTIVATION_FAILED, new Date());
+	    response.setErrorCode(1);
+	    response.setErrorMessage(NsMessageConstant.ACCOUNT_ACTIVATION_FAILED);
+	    response.setStatus(HttpStatus.PRECONDITION_FAILED);
+	}
+	return response;
     }
 
 //    public UserDto getUserByUserID(byte[] userId) {

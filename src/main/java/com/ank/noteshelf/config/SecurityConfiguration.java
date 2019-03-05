@@ -48,15 +48,29 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 		.antMatchers("/config").hasRole("ADMIN")
 
-		.antMatchers("/user/registration", "/greeting2", "/user/verify-registration-email",
-			"/user/forgot-password", "/user/verify-password-reset-token", "/user/reset-password",
-			"/user/login")
+		.antMatchers(
+
+			"/user/registration",
+
+			"/user/login",
+
+			"/user/verify-registration-email",
+
+			"/user/verify-password-reset-token",
+
+			"/user/reset-password",
+
+			"/user/activate-user-account",
+
+			"/user/forgot-password",
+
+			"/greeting2")
 		.permitAll()
 
 		.antMatchers("/login/oauth2/code/*").permitAll()
 
 		.anyRequest()
-	
+
 		.authenticated()
 
 		.and()

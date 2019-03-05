@@ -9,10 +9,9 @@ public class NsMessageConstant {
      */
 
     public static final String NO_NOTE_FOUND_BY_ID = "No Note found by the given ID";
-    public static final String NO_PROFILE_FOUND_BY_ID = "No Profile found by the given user id"; 
+    public static final String NO_PROFILE_FOUND_BY_ID = "No Profile found by the given user id";
     public static final String NO_PICTURE_FOUND_FOR_USER = "No Picture found for given user";
 
-    
     public static final String NO_CONFIG_FOUND_BY_NAME = "No Configuration found by the given name";
     public static final String CONFIG_SAVE_SUCCESS = "Configuration saved successfully";
     public static final String CONFIG_SAVE_ERROR = "Error occured while saving the configuration";
@@ -23,4 +22,7 @@ public class NsMessageConstant {
     public static final String PICTURE_DELETE_ERROR_NOT_FOUND = "Picture not found.";
 
     public static final String LOAD_DATA_EXCEPTION = "Exception occured in loading the data.";
+
+    public static final String ACCOUNT_ACTIVATED_SUCCESSFULLY = "User account has been activated successfully";
+    public static final String ACCOUNT_ACTIVATION_FAILED = "User account activation has failed";
 }

@@ -2,6 +2,7 @@ package com.ank.noteshelf.service;
 
 import com.ank.ankoauth2client.resource.UserDto;
 import com.ank.noteshelf.input.UserRegistrationInput;
+import com.ank.noteshelf.response.NsGenericResponse;
 
 public interface UserService {
 
@@ -13,5 +14,7 @@ public interface UserService {
 
     UserDto getUserByEmail(String email);
 
-    UserDto resetPassword(String userEmail, String password) ;
+    UserDto resetPassword(String userEmail, String password);
+
+    NsGenericResponse activateUserAccount(String userName);
 }
