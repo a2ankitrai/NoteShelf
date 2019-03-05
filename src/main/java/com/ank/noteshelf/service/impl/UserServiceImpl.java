@@ -156,9 +156,8 @@ public class UserServiceImpl implements UserService {
 	NsUserAuthDetail userAuthDetail = userAuthDetailRepository.findByUserId(userId);
 	NsGenericResponse response = new NsGenericResponse();
 	if (userAuthDetail != null) {
-//	    commented this for testing 
-//	    userAuthDetail.setEnabled(UserConstant.Y);
-//	    userAuthDetailRepository.save(userAuthDetail);
+	    userAuthDetail.setEnabled(UserConstant.Y);
+	    userAuthDetailRepository.save(userAuthDetail);
 	    response = new NsGenericResponse(NsMessageConstant.ACCOUNT_ACTIVATED_SUCCESSFULLY, new Date());
 	    response.setErrorCode(0);
 	    response.setStatus(HttpStatus.OK);
