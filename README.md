@@ -12,4 +12,5 @@ Tech stack:
 - Redis for caching user login sessions
 - MongoDB and MySQL as the data store
 - GCP Cloud Storage for images
+- Social Sign-in via Google and LinkedIn
  
